@@ -1,0 +1,13 @@
+{
+  "login": {
+    "languages": "اللغات",
+    "heyhello": "يا مرحبا",
+    "information": "أدخل المعلومات التي أدخلتها أثناء التسجيل",
+    "email": "بريد إلكتروني",
+    "password": "كلمة المرور",
+    "rememberMe": "تذكرنى",
+    "taskdistribution": "توزيع المهام ",
+    "developers": "للمطورين",
+    "youwillneverknow": "لن تعرف كل شيء أبدًا ولكنك ستعرف المزيد"
+  }
+}

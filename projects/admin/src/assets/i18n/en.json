@@ -1,0 +1,13 @@
+{
+  "login": {
+    "languages": "languages",
+    "heyhello": "Hey,hello",
+    "information": "Enter the information you entered while registering",
+    "email": "Email",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "taskdistribution": "Task distribution for",
+    "developers": "developers",
+    "youwillneverknow": "you will never know everything But you will know more"
+  }
+}

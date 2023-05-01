@@ -1,4 +1,69 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+// css global
+.background-gradient-3E9 {
+  background: #4e54c8;
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #8f94fb, #4e54c8);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #8f94fb, #4e54c8);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+/* start component login lang ar */
+html:lang(ar) {
+  .container-login .inner-text-title .title::before {
+    left: initial !important;
+    right: -2.5vw;
+    border-color: transparent white transparent transparent !important;
+  }
+
+  .form-login {
+    .form-check {
+      .form-check-input {
+        float: right;
+        margin-right: -1.5em;
+        margin-left: 0 !important;
+      }
+
+      padding-left: 0 !important;
+      padding-right: 1.5em;
+    }
+  }
+
+  .content-select-language {
+
+    .mat-form-field-label,
+    .mat-select-value {
+      text-align: right
+    }
+
+    .mat-option {
+      direction: rtl;
+    }
+
+    .mat-option-text {
+      margin-right: 10px;
+      text-align: right;
+    }
+  }
+
+  .content-select-language {
+    position: absolute;
+    top: 2vw;
+    right: initial;
+    left: 5vw;
+  }
+}
+
+/* End component login lang ar */
