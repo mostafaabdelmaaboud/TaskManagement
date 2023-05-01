@@ -28,7 +28,9 @@
               "projects/user/src/assets"
             ],
             "styles": [
-              "projects/user/src/styles.scss"
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "projects/user/src/styles.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
             "scripts": []
           },
@@ -96,6 +98,7 @@
               "projects/user/src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "projects/user/src/styles.scss"
             ],
             "scripts": []
@@ -128,7 +131,9 @@
               "projects/admin/src/assets"
             ],
             "styles": [
-              "projects/admin/src/styles.scss"
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+              "projects/admin/src/styles.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
             "scripts": []
           },
@@ -196,6 +201,7 @@
               "projects/admin/src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "projects/admin/src/styles.scss"
             ],
             "scripts": []
