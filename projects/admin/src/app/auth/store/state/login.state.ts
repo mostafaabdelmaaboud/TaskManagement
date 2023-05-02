@@ -18,6 +18,8 @@ import { HttpErrorResponse } from "@angular/common/http";
 @Injectable()
 export class AuthState {
   @Selector()
+  static token(state: AuthStateModel) { return state.token; }
+  @Selector()
   static getAuthLogin(State: AuthStateModel) {
     return State.token;
   }
@@ -33,6 +35,11 @@ export class AuthState {
   static loginIsLoading(State: AuthStateModel) {
     return State.isLoading;
   }
+  @Selector()
+  static isAuthenticated(state: AuthStateModel): boolean {
+
+    return !!state.token;
+  }
   constructor(private authService: LoginService) { }
 
   @Action(Login)
@@ -41,17 +48,15 @@ export class AuthState {
     patchState({ isLoading: true })
     return this.authService.login(action.payload).pipe(
       tap(res => {
-        debugger;
         patchState({
           token: res.token,
           userId: res.userId,
           isLoading: false,
           isSuccess: true,
           isError: null
-        })
+        });
       }),
       catchError(err => {
-        debugger;
         if (err instanceof HttpErrorResponse) {
           patchState({
             isLoading: false,
@@ -59,17 +64,20 @@ export class AuthState {
             isError: err.error.message
           });
         }
-        console.log("err", err);
-
-        return of("")
+        return of(err)
       })
     );
   }
   @Action(Logout)
   logout({ patchState }: StateContext<AuthStateModel>) {
-    // patchState({
-    //   token: null,
-    //   userId: null
-    // })
+    debugger;
+    localStorage.removeItem("token");
+    patchState({
+      token: null,
+      userId: null,
+      isSuccess: false,
+      isError: null,
+      isLoading: false
+    })
   }
 }

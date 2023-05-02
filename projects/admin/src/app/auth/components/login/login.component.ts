@@ -5,20 +5,20 @@ import { Select, Store } from '@ngxs/store';
 import { AuthState } from '../../store/state/login.state';
 import { Observable } from 'rxjs';
 import { Login } from '../../store/actions/login.actions';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  providers: [TranslateStore]
 })
 export class LoginComponent implements OnInit {
   isLoading = false;
 
   @ViewChild('dangerTpl') danger!: ElementRef;
-  @Select(AuthState.getAuthLogin) stateAuth$!: Observable<String | null>;
-  @Select(AuthState.loginIsSuccess) stateisSuccess$!: Observable<boolean>;
-  @Select(AuthState.loginIsError) stateisError$!: Observable<string | null>;
+
   @Select(AuthState.loginIsLoading) stateisLogin$!: Observable<boolean>;
   selectedLang: string = "en";
   loginForm!: FormGroup;
@@ -29,7 +29,8 @@ export class LoginComponent implements OnInit {
   public translate = inject(TranslateService);
   private fb = inject(FormBuilder);
   private store = inject(Store);
-
+  private toastr = inject(ToastrService);
+  private router = inject(Router);
   constructor() {
     this.selectedLang = localStorage.getItem("currentLang") || "en";
     this.changeLanguageSelect(this.selectedLang);
@@ -57,23 +58,14 @@ export class LoginComponent implements OnInit {
     return this.loginForm.controls;
   }
   ngOnInit(): void {
+
+
     this.stateisLogin$.subscribe(load => {
       this.isLoading = load;
     })
-    this.stateAuth$.subscribe(token => {
-      console.log("token", token)
-    });
-    this.stateisSuccess$.subscribe(sucess => {
-      debugger;
 
-      if (sucess) {
-        this.loginForm.reset()
-      }
-    })
-    this.stateisError$.subscribe(error => {
-      if (error) {
-      }
-    })
+
+
   }
   formGet(fonrmControl: string) {
     return this.loginForm.get(fonrmControl);
@@ -101,9 +93,28 @@ export class LoginComponent implements OnInit {
   login() {
     debugger;
     if (this.loginForm.valid && !this.isLoading) {
-      this.store.dispatch(new Login(this.loginForm.value)).subscribe(res => {
-        console.log(res);
-      })
+      this.store.dispatch(new Login(this.loginForm.value)).subscribe(
+        res => {
+          debugger;
+          if (res.auth.isError != null) {
+            debugger;
+            this.toastr.error(res.auth.isError, 'Http Error', {
+              timeOut: 5000,
+            });
+          } else {
+            debugger;
+
+            this.loginForm.reset();
+            this.toastr.success('Valid Email', 'Success', {
+              timeOut: 2000
+            });
+            localStorage.setItem("token", res.auth.token);
+
+            this.router.navigate(["/dashboard"])
+          }
+
+        }
+      );
     }
   }
 }

@@ -11,6 +11,10 @@ import { NgxsModule } from '@ngxs/store';
 import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { environment } from '../environments/environment';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
+import { ToastrModule } from 'ngx-toastr';
+import { AuthState } from './auth/store/state/login.state';
+import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
+
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
@@ -23,6 +27,9 @@ export function createTranslateLoader(http: HttpClient) {
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    ToastrModule.forRoot(),
+
+    NgxsModule.forRoot(),
     TranslateModule.forRoot({
       defaultLanguage: "en",
       loader: {
@@ -40,7 +47,6 @@ export function createTranslateLoader(http: HttpClient) {
       disabled: environment.production
     })
   ],
-
   bootstrap: [AppComponent]
 })
 export class AppModule { }

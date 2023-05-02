@@ -37,7 +37,6 @@
               <div *ngIf="f['email'].errors?.['required']" class="alert alert-danger custom-alert" role="alert">
                 {{"login.emailisrequired" | translate}}
               </div>
-
               <div *ngIf="f['email'].errors?.['pattern']" class="alert alert-danger custom-alert" role="alert">
                 {{"login.pleaseenteryouremail" | translate}}
               </div>
@@ -64,10 +63,6 @@
           <button type="submit" class="btn pe-auto btn-primary w-100 background-gradient-3E9 border-0">
             <span *ngIf="isLoading" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
             <span class="visually-visible">{{ isLoading ? ('loading' | translate) : ('Login' | translate) }}</span>
-            <!-- <span >{{buttonLoading ? 'login' | translate : 'Loading' | translate}}</span> -->
-
-
-
           </button>
         </form>
       </div>
