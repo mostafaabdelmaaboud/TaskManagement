@@ -29,6 +29,14 @@
   padding-bottom: 17px;
 }
 
+.contentSpinner {
+
+  background-color: rgba(0, 0, 0, 0.0200);
+}
+
+// :host ::ng-deep .mat-dialog-container {
+//   position: relative !important;
+// }
 
 .upload {
   padding-bottom: 15px;

@@ -33,7 +33,9 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/ngx-toastr/toastr.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/moment/moment.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -138,7 +140,9 @@
               "node_modules/@fortawesome/fontawesome-free/css/all.css",
               "node_modules/ngx-toastr/toastr.css"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/moment/moment.js"
+            ]
           },
           "configurations": {
             "production": {

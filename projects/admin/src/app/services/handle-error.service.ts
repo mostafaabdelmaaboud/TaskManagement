@@ -10,8 +10,8 @@ export class HandleErrorService {
   constructor(private toastr: ToastrService) { }
 
   public handleError(err: HttpErrorResponse) {
-    debugger
     let errorMessage: string;
+    debugger;
     if (err.error instanceof ErrorEvent) {
       errorMessage = `An error occurred: ${err.error.message}`
     } else {
@@ -40,10 +40,15 @@ export class HandleErrorService {
         default:
           errorMessage = `somthing went wrong!`
       }
-      errorMessage = `An error occurred: ${err.error.message}`
+      if (err.error.errors != undefined) {
+        errorMessage = errorMessage + " " + err.error.massage
+
+      }
+      if (err.error.message != undefined) {
+        errorMessage = err.error.message;
+      }
 
     }
-    debugger;
     this.toastr.error(errorMessage, '', {
       timeOut: 5000,
     });

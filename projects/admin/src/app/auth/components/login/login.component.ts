@@ -62,7 +62,6 @@ export class LoginComponent implements OnInit {
 
 
     this.stateisLogin$.subscribe(load => {
-      debugger;
       this.isLoading = load;
     })
 
@@ -96,7 +95,6 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid && !this.isLoading) {
       this.store.dispatch(new Login(this.loginForm.value)).subscribe(
         res => {
-          debugger;
           this.loginForm.reset();
           this.toastr.success('Valid Email', 'Success', {
             timeOut: 2000

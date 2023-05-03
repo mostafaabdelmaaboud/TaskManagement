@@ -62,4 +62,8 @@
       <button mat-raised-button cdkFocusInitial color="warn" (click)="onNoClick()">close</button>
     </div>
   </form>
+  <div class="contentSpinner" *ngIf="isLoaded">
+    <mat-spinner></mat-spinner>
+  </div>
+
 </div>
