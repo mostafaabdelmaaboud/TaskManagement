@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateLoader, TranslateModule, TranslateStore } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -14,6 +14,8 @@ import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { ToastrModule } from 'ngx-toastr';
 import { AuthState } from './auth/store/state/login.state';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
+import { HeadersInterceptor } from './interceptors/headers.interceptor';
+import { ErrorCatchingInterceptor } from './interceptors/error-catching.interceptor';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -46,6 +48,10 @@ export function createTranslateLoader(http: HttpClient) {
       // Do not log in production mode
       disabled: environment.production
     })
+  ],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: HeadersInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorCatchingInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
 })

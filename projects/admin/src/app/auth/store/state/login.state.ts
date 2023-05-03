@@ -2,7 +2,7 @@ import { Action, Selector, State, StateContext } from "@ngxs/store";
 import { AuthStateModel, Login, Logout } from "../actions/login.actions";
 import { Injectable } from "@angular/core";
 import { LoginService } from "../../services/login.service";
-import { catchError, of, tap } from "rxjs";
+import { catchError, of, tap, throwError } from "rxjs";
 import { HttpErrorResponse } from "@angular/common/http";
 
 @State<AuthStateModel>({
@@ -44,7 +44,6 @@ export class AuthState {
 
   @Action(Login)
   login({ patchState }: StateContext<AuthStateModel>, action: Login) {
-    debugger;
     patchState({ isLoading: true })
     return this.authService.login(action.payload).pipe(
       tap(res => {
@@ -57,20 +56,19 @@ export class AuthState {
         });
       }),
       catchError(err => {
-        if (err instanceof HttpErrorResponse) {
-          patchState({
-            isLoading: false,
-            isSuccess: false,
-            isError: err.error.message
-          });
-        }
-        return of(err)
+
+        patchState({
+          isLoading: false,
+          isSuccess: false,
+          isError: err
+        });
+        return throwError(() => err);
+
       })
     );
   }
   @Action(Logout)
   logout({ patchState }: StateContext<AuthStateModel>) {
-    debugger;
     localStorage.removeItem("token");
     patchState({
       token: null,

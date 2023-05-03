@@ -8,6 +8,7 @@ import { Login } from '../../store/actions/login.actions';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
+import { HandleErrorService } from '../../../services/handle-error.service';
 
 @Component({
   selector: 'app-login',
@@ -31,7 +32,7 @@ export class LoginComponent implements OnInit {
   private store = inject(Store);
   private toastr = inject(ToastrService);
   private router = inject(Router);
-  constructor() {
+  constructor(private error: HandleErrorService) {
     this.selectedLang = localStorage.getItem("currentLang") || "en";
     this.changeLanguageSelect(this.selectedLang);
     this.translate.setDefaultLang(this.selectedLang);
@@ -61,6 +62,7 @@ export class LoginComponent implements OnInit {
 
 
     this.stateisLogin$.subscribe(load => {
+      debugger;
       this.isLoading = load;
     })
 
@@ -91,28 +93,19 @@ export class LoginComponent implements OnInit {
     }
   }
   login() {
-    debugger;
     if (this.loginForm.valid && !this.isLoading) {
       this.store.dispatch(new Login(this.loginForm.value)).subscribe(
         res => {
           debugger;
-          if (res.auth.isError != null) {
-            debugger;
-            this.toastr.error(res.auth.isError, 'Http Error', {
-              timeOut: 5000,
-            });
-          } else {
-            debugger;
-
-            this.loginForm.reset();
-            this.toastr.success('Valid Email', 'Success', {
-              timeOut: 2000
-            });
-            localStorage.setItem("token", res.auth.token);
-
-            this.router.navigate(["/dashboard"])
-          }
-
+          this.loginForm.reset();
+          this.toastr.success('Valid Email', 'Success', {
+            timeOut: 2000
+          });
+          localStorage.setItem("token", res.auth.token);
+          this.router.navigate(["/dashboard"])
+        },
+        err => {
+          this.error.handleError(err);
         }
       );
     }
