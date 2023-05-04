@@ -1,17 +1,19 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Inject, Injectable, Injector, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { Store } from '@ngxs/store';
 import { ToastrService } from 'ngx-toastr';
+import { Logout } from '../auth/store/actions/login.actions';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HandleErrorService {
 
-  constructor(private toastr: ToastrService) { }
+  constructor(private store: Store, private router: Router, private toastr: ToastrService) { }
 
   public handleError(err: HttpErrorResponse) {
     let errorMessage: string;
-    debugger;
     if (err.error instanceof ErrorEvent) {
       errorMessage = `An error occurred: ${err.error.message}`
     } else {
@@ -47,11 +49,30 @@ export class HandleErrorService {
       if (err.error.message != undefined) {
         errorMessage = err.error.message;
       }
+      debugger;
+      if (err?.status == 500 && err.error?.message == "jwt expired") {
+        debugger;
+
+        this.toastr.error(errorMessage, '', {
+          timeOut: 2000,
+          onActivateTick: true
+        });
+        this.store.dispatch(new Logout()).subscribe(logout => {
+          this.router.navigate(["/login"]);
+        })
+
+      } else {
+        this.toastr.error(errorMessage, '', {
+          timeOut: 5000,
+          onActivateTick: true
+
+        });
+      }
+
 
     }
-    this.toastr.error(errorMessage, '', {
-      timeOut: 5000,
-    });
+
   }
+
 
 }

@@ -57,7 +57,23 @@
   }
 }
 
-:host ::ng-deep .mat-form-field-invalid {
+:host ::ng-deep .mat-form-field-invalid .mat-form-field-label,
+:host ::ng-deep .mat-focused,
+.mat-focused {
+  color: rgba(0, 0, 0, .6) !important;
+
+  .mat-form-field-required-marker,
+  .mat-form-field-required-marker {
+    color: rgba(0, 0, 0, .6) !important
+  }
+}
+
+:host ::ng-deep .mat-form-field-invalid.ng-touched .mat-form-field-label,
+:host ::ng-deep .mat-form-field-invalid.ng-touched .mat-form-field-label .mat-form-field-required-marker {
+  color: #f44336 !important;
+}
+
+:host ::ng-deep .mat-form-field-invalid.ng-touched {
 
   .mat-form-field-flex {
     border: 1px solid red !important;

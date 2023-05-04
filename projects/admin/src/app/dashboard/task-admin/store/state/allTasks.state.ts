@@ -2,19 +2,29 @@ import { catchError, throwError } from 'rxjs';
 import { tap } from 'rxjs';
 import { Injectable, inject } from "@angular/core";
 import { Action, Selector, State, StateContext } from "@ngxs/store";
-import { AddTask, GetAllTasks } from "../actions/allTasks.actions";
+import { AddTask, DeleteTask, GetAllTasks } from "../actions/allTasks.actions";
 import { ListTasksService } from "../../services/list-tasks.service";
-import { CreateTaskModel, UsersModel } from '../../context/DTOs';
+import { AddTaskModel, UsersModel } from '../../context/DTOs';
 
 export interface AllTasksModel {
   tasks: UsersModel[],
   tasksLoaded: Boolean,
   totalItems: number
 }
-export interface CreateTask {
-  massage: string | null,
-  createTaskIsLoaded: boolean,
-  isError: string | null
+export interface CreateTaskModel {
+  addTask: {
+    massage: string | null,
+    createTaskIsLoaded: boolean,
+    isError: string | null
+  }
+}
+export interface DeleteTaskModel {
+  deleteTask: {
+    massage: string | null,
+    DeleteTaskIsLoaded: boolean,
+    isError: string | null
+  }
+
 }
 @State<AllTasksModel>({
   name: 'tasks',
@@ -24,12 +34,24 @@ export interface CreateTask {
     totalItems: 0
   }
 })
-@State<CreateTask>({
+@State<CreateTaskModel>({
   name: 'AddTask',
   defaults: {
-    massage: null,
-    createTaskIsLoaded: false,
-    isError: null
+    addTask: {
+      massage: null,
+      createTaskIsLoaded: false,
+      isError: null
+    }
+  }
+})
+@State<DeleteTaskModel>({
+  name: 'DeleteTask',
+  defaults: {
+    deleteTask: {
+      massage: null,
+      DeleteTaskIsLoaded: false,
+      isError: null
+    }
   }
 })
 @Injectable()
@@ -39,24 +61,32 @@ export class AllTasksState {
     return state.tasks;
   }
   @Selector()
-  static addTaskIsLoaded(state: CreateTask) {
-    return state.createTaskIsLoaded;
+  static tasksLoaded(state: AllTasksModel) {
+    return state.tasksLoaded;
+  }
+
+  @Selector()
+  static addTaskIsLoaded(state: CreateTaskModel) {
+    return state.addTask.createTaskIsLoaded;
   }
   @Selector()
-  static massageCeareTaks(state: CreateTask) {
-    return state.massage;
+  static massageCreateTaks(state: CreateTaskModel) {
+    return state.addTask.massage;
   }
-
+  @Selector()
+  static massageDeleteTaks(state: DeleteTaskModel) {
+    return state.deleteTask.massage;
+  }
   private tasksService = inject(ListTasksService);
-
-  constructor() {
-
-  }
+  constructor() { }
   @Action(GetAllTasks)
   getAllTasks({ patchState }: StateContext<AllTasksModel>) {
+    debugger;
     patchState({ tasksLoaded: true })
     return this.tasksService.getTasks().pipe(
       tap(res => {
+        debugger;
+
         patchState({
           tasks: res.tasks,
           tasksLoaded: false,
@@ -64,6 +94,7 @@ export class AllTasksState {
         })
       }),
       catchError(err => {
+        debugger;
         patchState({
           tasks: [],
           tasksLoaded: false,
@@ -74,27 +105,77 @@ export class AllTasksState {
     )
   }
   @Action(AddTask)
-  addTask({ patchState, dispatch }: StateContext<CreateTask>, { payload }: AddTask) {
+  addTask({ patchState, dispatch, getState }: StateContext<CreateTaskModel>, { payload }: AddTask) {
     console.log("payload", payload);
-    patchState({ createTaskIsLoaded: true });
+    patchState({
+      addTask: {
+        ...getState().addTask,
+        createTaskIsLoaded: true
+      }
+    });
     return this.tasksService.addTask(payload).pipe(
       tap(res => {
 
         patchState({
-          massage: res.massage,
-          createTaskIsLoaded: false,
-          isError: null
+          addTask: {
+            massage: res.massage,
+            createTaskIsLoaded: false,
+            isError: null
+          }
+
         });
         dispatch(new GetAllTasks());
       }),
       catchError(err => {
         patchState({
-          massage: null,
-          createTaskIsLoaded: false,
-          isError: err
+          addTask: {
+            massage: null,
+            createTaskIsLoaded: false,
+            isError: err
+          }
         });
         return throwError(() => err);
       })
     )
   }
+  @Action(DeleteTask)
+  deleteTask({ patchState, dispatch, getState }: StateContext<DeleteTaskModel>, { id }: DeleteTask) {
+    patchState({
+      deleteTask: {
+        ...getState().deleteTask,
+        DeleteTaskIsLoaded: true,
+        massage: null
+
+      }
+    })
+    return this.tasksService.deleteTask(id).pipe(
+      tap(res => {
+
+        patchState({
+          deleteTask: {
+            massage: res.massage,
+            DeleteTaskIsLoaded: false,
+            isError: null
+          }
+
+        });
+        dispatch(new GetAllTasks());
+
+      }),
+      catchError(err => {
+
+        patchState({
+          deleteTask: {
+            massage: null,
+            DeleteTaskIsLoaded: false,
+            isError: err
+          }
+
+        })
+        return throwError(() => err)
+      })
+
+    )
+  }
+
 }

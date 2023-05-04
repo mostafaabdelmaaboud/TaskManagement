@@ -38,13 +38,9 @@ body {
   /* border: 0; */
   outline: 0 !important;
   border-radius: 5px !important;
+  box-shadow: 0 1px 0px rgba(0, 0, 0, 0.2) !important;
 }
 
-.mat-form-field-type-mat-input {
-  .mat-form-field-flex {
-    box-shadow: 0 1px 0px rgba(0, 0, 0, 0.2) !important;
-  }
-}
 
 .mat-form-field-underline {
   display: none;

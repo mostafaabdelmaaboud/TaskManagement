@@ -27,7 +27,7 @@ export class AddTaskComponent implements OnInit {
   private store = inject(Store);
   isLoaded = false;
   @Select(AllTasksState.addTaskIsLoaded) addTaskIsLoaded$!: Observable<boolean>;
-  @Select(AllTasksState.massageCeareTaks) massageCeareTaks$!: Observable<string | null>;
+  @Select(AllTasksState.massageCreateTaks) massageCreateTaks$!: Observable<string | null>;
 
 
   selectedImage = false;
@@ -54,17 +54,11 @@ export class AddTaskComponent implements OnInit {
     this.addTaskIsLoaded$.subscribe(res => {
       this.isLoaded = res;
     });
-    this.massageCeareTaks$.subscribe(res => {
-      if (res != null) {
-        this.toastr.success(res, 'Success', {
-          timeOut: 2000
-        });
-      }
-    })
+
   }
   creatForm() {
     this.newTaskForm = this.fb.group({
-      title: ["", Validators.required],
+      title: ["", [Validators.required, Validators.minLength(5)]],
       userId: ["", Validators.required],
       image: ["", Validators.required],
       description: ["", Validators.required],
@@ -90,17 +84,21 @@ export class AddTaskComponent implements OnInit {
     let form: FormData = this.prepareFormData();
 
     if (this.newTaskForm.valid) {
-      this.store.dispatch(new AddTask(form)).subscribe(res => {
 
-        this.dialogRef.close();
-
-      }, err => {
-        console.log(err, err);
-        this.error.handleError(err);
+      this.store.dispatch(new AddTask(form)).subscribe({
+        next: res => {
+          debugger;
+          this.dialogRef.close();
+          this.toastr.success(res.tasks.addTask.massage, 'Success', {
+            timeOut: 2000
+          });
+        },
+        error: err => {
+          console.log(err, err);
+          // this.error.handleError(err);
+        }
       });
     }
-
-
   }
   prepareFormData() {
     let newDate = moment(this.newTaskForm.get('deadline')?.value).format("DD-MM-YYYY");
@@ -108,13 +106,10 @@ export class AddTaskComponent implements OnInit {
     Object.entries(this.newTaskForm.value).forEach(([key, value]: any) => {
       if (key === "deadline") {
         formData.append(key, newDate);
-
       } else {
         formData.append(key, value);
-
       }
     });
     return formData;
-
   }
 }

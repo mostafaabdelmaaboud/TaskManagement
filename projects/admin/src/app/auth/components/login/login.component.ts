@@ -103,7 +103,7 @@ export class LoginComponent implements OnInit {
           this.router.navigate(["/dashboard"])
         },
         err => {
-          this.error.handleError(err);
+          // this.error.handleError(err);
         }
       );
     }

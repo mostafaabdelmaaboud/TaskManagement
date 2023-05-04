@@ -1,5 +1,5 @@
 
-export interface CreateTaskModel {
+export interface AddTaskModel {
   title: string,
   userId: string,
   image: object,
@@ -20,6 +20,7 @@ export interface UsersModel {
   status: string;
   title: string;
   updatedAt: Date;
+  loading: boolean;
   userId: UserID;
   _id: string;
 }
