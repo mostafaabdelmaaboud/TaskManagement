@@ -16,6 +16,7 @@ import { AuthState } from './auth/store/state/login.state';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { HeadersInterceptor } from './interceptors/headers.interceptor';
 import { ErrorCatchingInterceptor } from './interceptors/error-catching.interceptor';
+import { AllTasksState } from './dashboard/task-admin/store/state/allTasks.state';
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -31,7 +32,6 @@ export function createTranslateLoader(http: HttpClient) {
     HttpClientModule,
     ToastrModule.forRoot(),
 
-    NgxsModule.forRoot(),
     TranslateModule.forRoot({
       defaultLanguage: "en",
       loader: {
@@ -40,14 +40,14 @@ export function createTranslateLoader(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
-    NgxsModule.forRoot(),
+    NgxsModule.forRoot([AllTasksState]),
     NgxsReduxDevtoolsPluginModule.forRoot({
-      disabled: environment.production
+      maxAge: 50
     }),
     NgxsLoggerPluginModule.forRoot({
       // Do not log in production mode
       disabled: environment.production
-    })
+    }),
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HeadersInterceptor, multi: true },

@@ -27,36 +27,36 @@ export class ListTasksComponent implements OnInit {
   @Select(AllTasksState.allTasks) allTasks$!: Observable<any[]>;
   @Select(AllTasksState.massageDeleteTaks) massageDeleteTaks$!: Observable<string | null>;
   @Select(AllTasksState.tasksLoaded) tasksLoaded$!: Observable<boolean>;
-
-
   private store = inject(Store);
   public dialog = inject(MatDialog);
   private error = inject(HandleErrorService);
   private toastr = inject(ToastrService);
+  users: any = [
+    { name: "Mohamed", id: "6452a0749bdca9984acf10f8" },
+    { name: "islam", id: "6452a6e09bdca9984acf111a" },
+    { name: "Ahmed", id: "6452a0e79bdca9984acf10fe" },
+    { name: "Mostafa", id: "6452a1049bdca9984acf1101" },
+    { name: "shosho", id: "6452b8d3bd7e7eb41913875f" }
+  ]
   constructor() { }
 
   ngOnInit(): void {
     this.allTasks$.subscribe((res: UsersModel[]) => {
       console.log(res, res);
       this.dataSource = this.mappingTasks(res);
-
     });
     this.massageDeleteTaks$.subscribe(res => {
-      debugger;
       if (res != null) {
         this.toastr.success("Task Is Deleted", 'Success', {
           timeOut: 2000
         });
       }
     })
-    debugger;
     this.store.dispatch(new GetAllTasks()).subscribe({
       next: res => {
-        debugger;
         this.isLoading = false;
       },
       error: err => {
-        debugger;
         this.isLoading = false;
       }
     });
@@ -66,16 +66,12 @@ export class ListTasksComponent implements OnInit {
     let conf = confirm("Want to delete?");
     if (conf) {
       this.dataSource[objIndex].loading = true;
-
       this.store.dispatch(new DeleteTask(id)).subscribe({
         next: data => {
-
           this.dataSource[objIndex].loading = false;
         },
         error: err => {
           this.dataSource[objIndex].loading = false;
-          // this.error.handleError(err);
-
         },
       })
 
@@ -102,5 +98,10 @@ export class ListTasksComponent implements OnInit {
       console.log('The dialog was closed');
     });
   }
-
+  updateRow(element: UsersModel) {
+    const dialogRef = this.dialog.open(AddTaskComponent, {
+      width: "40vw",
+      data: element
+    });
+  }
 }

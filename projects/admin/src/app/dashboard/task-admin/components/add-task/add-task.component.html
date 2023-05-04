@@ -61,8 +61,8 @@
       </mat-form-field>
     </div>
     <div mat-dialog-actions class="dialog-footer">
-      <button mat-raised-button cdkFocusInitial color="primary" type="submit">create</button>
-      <button mat-raised-button cdkFocusInitial color="warn" (click)="onNoClick()">close</button>
+      <button mat-raised-button cdkFocusInitial color="primary" type="submit">{{data ? 'Update' : 'Create'}}</button>
+      <button mat-raised-button cdkFocusInitial color="warn" type="button" (click)="onNoClick()">close</button>
     </div>
   </form>
   <div class="contentSpinner" *ngIf="isLoaded">

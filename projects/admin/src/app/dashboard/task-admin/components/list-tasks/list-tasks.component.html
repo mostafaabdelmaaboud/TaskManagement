@@ -2,43 +2,125 @@
   <div class="header">
     <button mat-raised-button color="primary" (click)="openDialog()">Add Tasks</button>
   </div>
-  <div class="containerTable position-relative">
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100">
+  <div class="containerFilteration col">
+    <form>
+      <div class="row">
+        <div class="col-lg-3 col-md-6 col-sm-12">
+          <mat-form-field class="w-100" appearance="fill">
+            <mat-label>Search</mat-label>
+            <input matInput name="title">
+            <!-- <mat-error *ngIf="newTaskForm.get('title')?.hasError('required')">
+                  title is <strong>required</strong>
+                </mat-error>
+                <mat-error *ngIf="newTaskForm.get('title')?.hasError('minlength') && newTaskForm.get('title')?.touched">
+                  minimun length 5 characters
+                </mat-error> -->
+          </mat-form-field>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12">
+          <mat-form-field class="w-100" appearance="fill">
+            <mat-label>By User</mat-label>
+            <mat-select>
+              <mat-option *ngFor="let user of users" [value]="user.id">
+                {{user.name}}
+              </mat-option>
+            </mat-select>
+            <!-- <mat-error *ngIf="newTaskForm.get('userId')?.hasError('required')">
+                    User is <strong>required</strong>
+                  </mat-error> -->
+          </mat-form-field>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-12">
+          <mat-form-field class="w-100" appearance="fill">
+            <mat-label>Status</mat-label>
+            <mat-select>
+              <mat-option *ngFor="let user of users" [value]="user.id">
+                {{user.name}}
+              </mat-option>
+            </mat-select>
+            <!-- <mat-error *ngIf="newTaskForm.get('userId')?.hasError('required')">
+                                  User is <strong>required</strong>
+                                </mat-error> -->
+          </mat-form-field>
+        </div>
+        <div class="col-lg-3 col-md-6 col-sm-12">
+
+          <mat-form-field appearance="fill">
+            <mat-label>Enter a date range</mat-label>
+            <mat-date-range-input [rangePicker]="picker">
+              <input matStartDate placeholder="Start date">
+              <input matEndDate placeholder="End date">
+            </mat-date-range-input>
+            <!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+
+            <!-- <mat-error *ngIf="range.controls.start.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+            <mat-error *ngIf="range.controls.end.hasError('matEndDateInvalid')">Invalid end date</mat-error> -->
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+
+  </div>
+  <div class="containerTable example-container position-relative mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-100 isMobile">
       <!-- Position Column -->
       <ng-container matColumnDef="position">
         <th mat-header-cell *matHeaderCellDef> No. </th>
         <td class="image-td" mat-cell *matCellDef="let element, let index = index">
+          <span class="mobile-label">Position:</span>
+
           <img [alt]="element.title" [src]="linkServer +'/' + element.image" alt="" width="70px" height="70px">
         </td>
       </ng-container>
       <!-- title Column -->
       <ng-container matColumnDef="title">
         <th mat-header-cell *matHeaderCellDef> Title </th>
-        <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+        <td mat-cell *matCellDef="let element">
+          <span class="mobile-label">Title:</span>
+
+          {{element.title}}
+
+        </td>
+
       </ng-container>
 
       <!-- user Column -->
       <ng-container matColumnDef="user">
         <th mat-header-cell *matHeaderCellDef> User </th>
-        <td mat-cell *matCellDef="let element"> {{element.user}} </td>
+        <td mat-cell *matCellDef="let element">
+          <span class="mobile-label">User:</span>
+
+          {{element.user}}
+        </td>
       </ng-container>
 
       <!-- deadLineData Column -->
       <ng-container matColumnDef="deadline">
         <th mat-header-cell *matHeaderCellDef> dead Line Data </th>
-        <td mat-cell *matCellDef="let element"> {{element.deadline}} </td>
+        <td mat-cell *matCellDef="let element">
+          <span class="mobile-label">deadline:</span>
+
+          {{element.deadline}}
+        </td>
       </ng-container>
 
       <!-- status Column -->
       <ng-container matColumnDef="status">
         <th mat-header-cell *matHeaderCellDef> status </th>
-        <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+        <td mat-cell *matCellDef="let element">
+          <span class="mobile-label">status:</span>
+
+          {{element.status}}
+        </td>
       </ng-container>
       <!-- actions Column -->
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef> actions </th>
         <td mat-cell *matCellDef="let element" class="columnActionTable">
-          <button mat-raised-button color="primary">Update</button>
+          <button mat-raised-button color="primary" (click)="updateRow(element)">Update</button>
           <button mat-raised-button color="warn" (click)="deleteRow(element._id)">Delete</button>
           <div class="row-spinner" *ngIf="element._id && element.loading" id="spinner-{{element.id}}">
             <mat-spinner diameter="60" [style.width.px]="60" [style.height.px]="60"></mat-spinner>

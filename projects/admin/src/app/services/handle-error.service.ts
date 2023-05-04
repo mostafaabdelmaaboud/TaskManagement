@@ -49,9 +49,7 @@ export class HandleErrorService {
       if (err.error.message != undefined) {
         errorMessage = err.error.message;
       }
-      debugger;
-      if (err?.status == 500 && err.error?.message == "jwt expired") {
-        debugger;
+      if ((err?.status == 500 && err.error?.message == "jwt expired") || err?.status == 401) {
 
         this.toastr.error(errorMessage, '', {
           timeOut: 2000,
@@ -68,10 +66,7 @@ export class HandleErrorService {
 
         });
       }
-
-
     }
-
   }
 
 

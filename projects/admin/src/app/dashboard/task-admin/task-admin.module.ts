@@ -14,11 +14,14 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ConfirmationComponent } from './components/confirmation/confirmation.component';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 
 @NgModule({
   declarations: [
     ListTasksComponent,
-    AddTaskComponent
+    AddTaskComponent,
+    ConfirmationComponent
   ],
   imports: [
     CommonModule,

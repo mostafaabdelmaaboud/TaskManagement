@@ -13,7 +13,7 @@ import { Observable } from 'rxjs';
 export class LayoutComponent implements OnInit {
 
   @Select(AuthState.getAuthLogin) stateAuth$!: Observable<String | null>;
-  public isCollapsed = false;
+  public isCollapsed = true;
 
   constructor(private store: Store, private router: Router) { }
 

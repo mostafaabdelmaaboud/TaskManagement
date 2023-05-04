@@ -1,15 +1,17 @@
-import { Component, Inject, NgZone, OnInit, ViewChild, inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, Inject, NgZone, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { Observable, take } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import * as moment from 'moment';
 import { Select, Store } from '@ngxs/store';
-import { AddTask } from '../../store/actions/allTasks.actions';
+import { AddTask, UpdateTask } from '../../store/actions/allTasks.actions';
 import { AllTasksState } from '../../store/state/allTasks.state';
 import { ToastrService } from 'ngx-toastr';
 import { HandleErrorService } from 'projects/admin/src/app/services/handle-error.service';
+import { AddTaskModel, UsersModel } from '../../context/DTOs';
+import { ConfirmationComponent } from '../confirmation/confirmation.component';
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
     const isSubmitted = form && form.submitted;
@@ -28,15 +30,14 @@ export class AddTaskComponent implements OnInit {
   isLoaded = false;
   @Select(AllTasksState.addTaskIsLoaded) addTaskIsLoaded$!: Observable<boolean>;
   @Select(AllTasksState.massageCreateTaks) massageCreateTaks$!: Observable<string | null>;
-
-
   selectedImage = false;
   newTaskForm!: FormGroup;
   matcher = new MyErrorStateMatcher();
   fileName = '';
   private toastr = inject(ToastrService);
   private error = inject(HandleErrorService);
-
+  formValues!: any;
+  closeDialog = false;
   users: any = [
     { name: "Mohamed", id: "6452a0749bdca9984acf10f8" },
     { name: "islam", id: "6452a6e09bdca9984acf111a" },
@@ -46,31 +47,53 @@ export class AddTaskComponent implements OnInit {
   ]
   constructor(
     public dialogRef: MatDialogRef<AddTaskComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private _ngZone: NgZone
-  ) { }
+    public matDialig: MatDialog,
+    @Inject(MAT_DIALOG_DATA) public data: UsersModel,
+    private _ngZone: NgZone,
+  ) {
+    this.dialogRef.disableClose = true;
+  }
+
   ngOnInit(): void {
     this.creatForm();
     this.addTaskIsLoaded$.subscribe(res => {
       this.isLoaded = res;
     });
-
+    console.log("data dialog", this.data);
+    if (this.data) {
+      this.fileName = this.data.image;
+    }
   }
   creatForm() {
     this.newTaskForm = this.fb.group({
-      title: ["", [Validators.required, Validators.minLength(5)]],
-      userId: ["", Validators.required],
-      image: ["", Validators.required],
-      description: ["", Validators.required],
-      deadline: ["", Validators.required]
-    })
+      title: [this.data?.title || "", [Validators.required, Validators.minLength(5)]],
+      userId: [this.data?.userId?._id || "", Validators.required],
+      image: [this.data?.image || "", Validators.required],
+      description: [this.data?.description || "", Validators.required],
+      deadline: [this.data ? new Date(this.data?.deadline.split("-").reverse().join("-")).toISOString() : "", Validators.required]
+    });
+    this.formValues = this.newTaskForm.value;
   }
   triggerResize() {
     // Wait for changes to be applied, then trigger textarea resize.
     this._ngZone.onStable.pipe(take(1)).subscribe(() => this.autosize.resizeToFitContent(true));
   }
   onNoClick(): void {
-    this.dialogRef.close();
+    this.closeDialog = false;
+
+    Object.keys(this.formValues).forEach((item: string) => {
+      if (this.formValues[item] != this.newTaskForm.value[item]) {
+        this.closeDialog = true;
+      }
+
+    });
+    if (!this.closeDialog) {
+      this.dialogRef.close();
+    } else {
+      const dialogRef = this.matDialig.open(ConfirmationComponent, {
+        width: "30vw"
+      });
+    }
   }
 
   onFileSelected(event: any) {
@@ -84,20 +107,34 @@ export class AddTaskComponent implements OnInit {
     let form: FormData = this.prepareFormData();
 
     if (this.newTaskForm.valid) {
+      if (this.data) {
+        this.store.dispatch(new UpdateTask(form, this.data._id)).subscribe({
+          next: res => {
+            this.dialogRef.close();
+            this.toastr.success(res.tasks.addTask.massage, 'Success', {
+              timeOut: 2000
+            });
+          },
+          error: err => {
+            console.log(err, err);
+            // this.error.handleError(err);
+          }
+        });
+      } else {
+        this.store.dispatch(new AddTask(form)).subscribe({
+          next: res => {
+            this.dialogRef.close();
+            this.toastr.success(res.tasks.addTask.massage, 'Success', {
+              timeOut: 2000
+            });
+          },
+          error: err => {
+            console.log(err, err);
+            // this.error.handleError(err);
+          }
+        });
+      }
 
-      this.store.dispatch(new AddTask(form)).subscribe({
-        next: res => {
-          debugger;
-          this.dialogRef.close();
-          this.toastr.success(res.tasks.addTask.massage, 'Success', {
-            timeOut: 2000
-          });
-        },
-        error: err => {
-          console.log(err, err);
-          // this.error.handleError(err);
-        }
-      });
     }
   }
   prepareFormData() {
@@ -112,4 +149,5 @@ export class AddTaskComponent implements OnInit {
     });
     return formData;
   }
+
 }

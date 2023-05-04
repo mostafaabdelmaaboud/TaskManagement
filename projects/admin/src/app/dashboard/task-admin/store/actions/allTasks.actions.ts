@@ -13,6 +13,11 @@ export class AddTask {
 export class DeleteTask {
   static readonly type = "[Tasks] Delete Task";
   constructor(public id: string) {
+  }
+}
+export class UpdateTask {
+  static readonly type = "[Tasks] Update Task";
+  constructor(public payload: FormData, public id: string) {
 
   }
 }

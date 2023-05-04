@@ -2,7 +2,7 @@ import { catchError, throwError } from 'rxjs';
 import { tap } from 'rxjs';
 import { Injectable, inject } from "@angular/core";
 import { Action, Selector, State, StateContext } from "@ngxs/store";
-import { AddTask, DeleteTask, GetAllTasks } from "../actions/allTasks.actions";
+import { AddTask, DeleteTask, GetAllTasks, UpdateTask } from "../actions/allTasks.actions";
 import { ListTasksService } from "../../services/list-tasks.service";
 import { AddTaskModel, UsersModel } from '../../context/DTOs';
 
@@ -81,11 +81,9 @@ export class AllTasksState {
   constructor() { }
   @Action(GetAllTasks)
   getAllTasks({ patchState }: StateContext<AllTasksModel>) {
-    debugger;
     patchState({ tasksLoaded: true })
     return this.tasksService.getTasks().pipe(
       tap(res => {
-        debugger;
 
         patchState({
           tasks: res.tasks,
@@ -94,7 +92,6 @@ export class AllTasksState {
         })
       }),
       catchError(err => {
-        debugger;
         patchState({
           tasks: [],
           tasksLoaded: false,
@@ -115,7 +112,38 @@ export class AllTasksState {
     });
     return this.tasksService.addTask(payload).pipe(
       tap(res => {
+        patchState({
+          addTask: {
+            massage: res.massage,
+            createTaskIsLoaded: false,
+            isError: null
+          }
 
+        });
+        dispatch(new GetAllTasks());
+      }),
+      catchError(err => {
+        patchState({
+          addTask: {
+            massage: null,
+            createTaskIsLoaded: false,
+            isError: err
+          }
+        });
+        return throwError(() => err);
+      })
+    )
+  }
+  @Action(UpdateTask)
+  updateTask({ patchState, dispatch, getState }: StateContext<CreateTaskModel>, { payload, id }: UpdateTask) {
+    patchState({
+      addTask: {
+        ...getState().addTask,
+        createTaskIsLoaded: true
+      }
+    });
+    return this.tasksService.updateTask(payload, id).pipe(
+      tap(res => {
         patchState({
           addTask: {
             massage: res.massage,
