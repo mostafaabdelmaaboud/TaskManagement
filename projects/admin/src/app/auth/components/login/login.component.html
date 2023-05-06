@@ -1,0 +1,71 @@
+<div class="container-login">
+  <div class="row m-0">
+    <div class="col d-none d-sm-block p-0 background-grad-login position-relative">
+      <div class="background-side-login d-flex justify-content-center align-items-center">
+        <div class="inner-text-title">
+          <h1 class="title position-relative">
+            {{'login.taskdistribution' | translate}}
+            <span>{{'login.developers' | translate}}</span>
+          </h1>
+          <p class="p-0 parag">{{'login.youwillneverknow' | translate}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col container-form-login position-relative d-flex justify-content-center align-items-center">
+      <div class="content-select-language">
+        <mat-form-field appearance="fill">
+          <mat-label>{{'login.languages' | translate}}</mat-label>
+          <mat-select [(value)]="selectedLang" (selectionChange)="selectChange($event)">
+            <mat-option *ngFor="let lang of langs" [value]="lang.value">
+              {{lang.viewValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="form">
+        <div class="title-form">
+          <h2 class="head-form-login fw-bold">{{'login.heyhello' | translate}} <i class="fa-solid fa-hands-bubbles"></i>
+          </h2>
+          <p class="parg-form-login">{{"login.information" | translate}}</p>
+        </div>
+        <form class="form-login" [formGroup]="loginForm" (submit)="login()">
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label fw-bold">{{"login.email" | translate}}</label>
+            <input type="email" class="form-control" name="email" formControlName="email" id="exampleInputEmail1"
+              aria-describedby="emailHelp">
+            <ng-container *ngIf="f['email'].errors && (f['email'].invalid && f['email'].dirty)">
+              <div *ngIf="f['email'].errors?.['required']" class="alert alert-danger custom-alert" role="alert">
+                {{"login.emailisrequired" | translate}}
+              </div>
+              <div *ngIf="f['email'].errors?.['pattern']" class="alert alert-danger custom-alert" role="alert">
+                {{"login.pleaseenteryouremail" | translate}}
+              </div>
+            </ng-container>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputPassword1" class="form-label fw-bold">{{"login.password" | translate}}</label>
+            <input type="password" formControlName="password" name="password" class="form-control"
+              id="exampleInputPassword1">
+            <ng-container *ngIf="f['password'].errors && (f['password'].invalid && f['password'].dirty)">
+              <div *ngIf="f['password'].errors?.['required']" class="alert alert-danger custom-alert" role="alert">
+                {{"login.passwordisrequired" | translate}}
+              </div>
+              <div *ngIf="f['password'].errors?.['pattern']" class="alert alert-danger custom-alert" role="alert">
+                {{"login.patternpassword" | translate}}
+              </div>
+            </ng-container>
+          </div>
+          <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1">{{"login.rememberMe" | translate}}</label>
+          </div>
+
+          <button type="submit" class="btn pe-auto btn-primary w-100 background-gradient-3E9 border-0">
+            <span *ngIf="isLoading" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            <span class="visually-visible">{{ isLoading ? ('loading' | translate) : ('Login' | translate) }}</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

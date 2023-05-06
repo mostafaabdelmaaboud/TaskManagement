@@ -1,0 +1,48 @@
+{
+  "login": {
+    "login": "login",
+    "loading": "Loading...",
+    "languages": "languages",
+    "heyhello": "Hey,hello",
+    "information": "Enter the information you entered while registering",
+    "email": "Email",
+    "password": "Password",
+    "rememberMe": "Remember me",
+    "taskdistribution": "Task distribution for",
+    "developers": "developers",
+    "youwillneverknow": "you will never know everything But you will know more",
+    "emailisrequired": "Email is Required",
+    "pleaseenteryouremail": "please enter your email",
+    "passwordisrequired": "Password is Required",
+    "patternpassword": "The first two characters must be letters from a to z, followed by either numbers or letters, with a minimum length of 6 characters or but not exceed 14 characters",
+    "arabic": "Arabic",
+    "english": "English"
+  },
+  "tasks": {
+    "tasks": "Tasks",
+    "alltasks": "All Tasks",
+    "users": "Users",
+    "logout": "logout",
+    "addtasks": "Add Tasks",
+    "search": "Search",
+    "byuser": "By User",
+    "status": "Status",
+    "enteradaterange": "Enter a date range",
+    "no": "No",
+    "position": "Position",
+    "title": "Title",
+    "user": "User",
+    "deadline": "deadline",
+    "update": "Update",
+    "delete": "Delete",
+    "actions": "actions"
+  },
+  "MAT_PAGINATOR": {
+    "ITEMS_PER_PAGE": "Items per page",
+    "OF": "of",
+    "NEXT_PAGE": "Next Page",
+    "LAST_PAGE": "Last Page",
+    "FIRST_PAGE": "First Page",
+    "PREVIOUS_PAGE": "Previous Page"
+  }
+}

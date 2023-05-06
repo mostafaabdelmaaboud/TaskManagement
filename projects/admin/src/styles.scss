@@ -1,0 +1,240 @@
+/* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+// css global
+.background-gradient-3E9 {
+  background: #4e54c8;
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #8f94fb, #4e54c8);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #8f94fb, #4e54c8);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+
+
+.contentSpinner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.mat-form-field-flex {
+  background-color: white !important;
+  border: 1px solid #e3e3e3;
+  /* border: 0; */
+  outline: 0 !important;
+  border-radius: 5px !important;
+  box-shadow: 0 1px 0px rgba(0, 0, 0, 0.2) !important;
+}
+
+
+.mat-form-field-underline {
+  display: none;
+}
+
+.layOut-language {
+  margin-right: 26px;
+}
+
+.layOut-language .mat-form-field-wrapper {
+  padding: 0 !important;
+}
+
+/* start component login lang ar */
+html:lang(ar) {
+  .layOut-language {
+    margin-right: 0;
+    margin-left: 26px;
+  }
+
+  .container-login .inner-text-title .title::before {
+    left: initial !important;
+    right: -2.5vw;
+    border-color: transparent white transparent transparent !important;
+  }
+
+  .header {
+    text-align: left !important;
+  }
+
+  .form-login {
+    .form-check {
+      .form-check-input {
+        float: right;
+        margin-right: -1.5em;
+        margin-left: 0 !important;
+      }
+
+      padding-left: 0 !important;
+      padding-right: 1.5em;
+    }
+  }
+
+  .content-select-language {
+
+    .mat-form-field-label,
+    .mat-select-value {
+      text-align: right
+    }
+
+    .mat-option {
+      direction: rtl;
+    }
+
+    .mat-option-text {
+      margin-right: 10px;
+      text-align: right;
+    }
+  }
+
+  .content-select-language {
+    position: absolute;
+    top: 2vw;
+    right: initial;
+    left: 5vw;
+  }
+
+  .me-auto {
+    margin-left: auto;
+    margin-right: 0 !important;
+  }
+
+  .dialog-footer {
+    direction: rtl;
+  }
+}
+
+.columnActionTable {
+  width: 190px;
+  padding: 0 !important;
+}
+
+.mat-paginator-page-size-select {
+  margin: 0 !important;
+  width: 65px !important;
+
+  .mat-form-field-wrapper {
+    padding: 0 !important;
+
+    .mat-form-field-infix {
+      border-top: 0;
+      margin: 0 !important;
+      padding: 10px 4px !important;
+    }
+  }
+}
+
+/* End component login lang ar */
+
+/*Start Responsive */
+// Start responsive mat-table
+.mobile-label {
+  display: none !important;
+}
+
+.mat-form-field {
+  display: block !important;
+}
+
+@media(max-width: 992px) {
+  .layOut-language {
+    width: initial;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+
+  .layOut-language {
+    +button {
+      display: block;
+    }
+  }
+}
+
+@media(max-width: 768px) {
+
+  .container,
+  .container-sm {
+    max-width: 100% !important;
+  }
+
+  .columnActionTable {
+    width: initial !important;
+    padding: 0 !important;
+    height: 100%;
+    margin: 0 !important;
+    text-align: center;
+    padding: 0 10px !important;
+
+    button {
+      display: block;
+      width: 100%;
+      margin: 0 !important;
+      margin-bottom: 8px !important;
+    }
+
+    button:last-of-type {
+      margin-bottom: 0px !important;
+    }
+  }
+}
+
+@media(max-width: 600px) {
+  .mobile-label {
+    width: 80px !important;
+    display: inline-block !important;
+    font-weight: bold;
+  }
+
+  .columnActionTable {
+    width: 100% !important;
+    padding: 15px 0 !important;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .mat-row {
+    display: flex;
+    flex-direction: column !important;
+    align-items: start !important;
+    padding: 8px 24px;
+    height: initial !important;
+  }
+
+  .image-td {
+    width: 100% !important;
+  }
+
+  mat-header-cell,
+  .mat-cell,
+  .mat-footer-cell {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    padding: 10px 0 !important;
+  }
+
+  .mat-header-row {
+    display: none !important;
+  }
+
+}
+
+// End responsive mat-table
+/*End Responsive */

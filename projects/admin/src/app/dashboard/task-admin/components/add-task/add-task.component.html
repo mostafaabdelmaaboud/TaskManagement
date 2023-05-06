@@ -1,0 +1,72 @@
+<div mat-dialog-title class="headerAddTask">
+  <h1 class="m-0">Add New Task</h1>
+  <button class="header-close" mat-button (click)="onNoClick()">x</button>
+</div>
+<div class="formDialog">
+  <form [formGroup]="newTaskForm" (submit)="createTask()">
+    <div mat-dialog-content>
+      <mat-form-field class="w-100" appearance="fill">
+        <mat-label>title</mat-label>
+        <input matInput name="title" formControlName="title" [errorStateMatcher]="matcher">
+        <mat-error *ngIf="newTaskForm.get('title')?.hasError('required')">
+          title is <strong>required</strong>
+        </mat-error>
+        <mat-error *ngIf="newTaskForm.get('title')?.hasError('minlength') && newTaskForm.get('title')?.touched">
+          minimun length 5 characters
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="w-100" appearance="fill">
+        <mat-label>User</mat-label>
+        <mat-select formControlName="userId">
+          <mat-option *ngFor="let user of users" [value]="user.id">
+            {{user.name}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="newTaskForm.get('userId')?.hasError('required')">
+          User is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <div class="upload">
+        <input type="file" accept="image/png, image/jpeg, image/jpg" class="file-input d-none"
+          (change)="onFileSelected($event)" #fileUpload>
+        <div class="file-upload" [class.borderRad]="newTaskForm.get('image')?.hasError('required') && selectedImage"
+          (click)="fileUpload.click()">
+          {{fileName || "No file uploaded yet."}}
+          <button mat-mini-fab color="primary" type="button" class="upload-btn">
+            <i class="fa-solid fa-paperclip"></i>
+          </button>
+        </div>
+        <mat-error *ngIf="newTaskForm.get('image')?.hasError('required') && selectedImage">
+          image is <strong>required</strong>
+        </mat-error>
+      </div>
+
+      <mat-form-field class="w-100" appearance="fill">
+        <mat-label>deadline Date</mat-label>
+        <input formControlName="deadline" matInput [matDatepicker]="picker">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+        <mat-error *ngIf="newTaskForm.get('deadline')?.hasError('required')">
+          deadline Date is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="w-100" appearance="fill">
+        <mat-label>Address</mat-label>
+        <textarea formControlName="description" matInput rows="8" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+          cdkAutosizeMinRows="1" cdkAutosizeMaxRows="15"></textarea>
+        <mat-error *ngIf="newTaskForm.get('description')?.hasError('required')">
+          Address is <strong>required</strong>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div mat-dialog-actions class="dialog-footer">
+      <button mat-raised-button cdkFocusInitial color="primary" type="submit">{{data ? 'Update' : 'Create'}}</button>
+      <button mat-raised-button cdkFocusInitial color="warn" type="button" (click)="onNoClick()">close</button>
+    </div>
+  </form>
+  <div class="contentSpinner" *ngIf="isLoaded">
+    <mat-spinner></mat-spinner>
+  </div>
+
+</div>

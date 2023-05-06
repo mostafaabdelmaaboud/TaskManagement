@@ -1,0 +1,138 @@
+%padding-lr-15 {}
+
+
+%position-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+}
+
+
+.container-login {
+  .background-grad-login {
+    background-color: #8EC5FC;
+    background-image: linear-gradient(62deg, #8EC5FC 0%, #E0C3FC 100%);
+  }
+
+  .inner-text-title {
+    .title {
+      font-family: "Dancing Script", cursive;
+      font-size: 4vw;
+      color: white;
+      font-weight: bolder;
+      line-height: 5vw;
+
+      &::before {
+        content: "";
+        border-width: 1.5vw 1.5vw 1.5vw 1.5vw;
+        border-color: transparent transparent transparent white;
+        border-style: solid;
+        position: absolute;
+        left: -2.5vw;
+        top: 1.1vw
+      }
+
+      span {
+        color: #051252;
+      }
+    }
+
+    .parag {
+      color: ghostwhite;
+      font-size: 1.5vw;
+    }
+
+    padding: 0 5vw;
+  }
+
+  .background-side-login {
+    @extend %position-center;
+    width: 80%;
+    height: 38vw;
+    font-family: 'Tajawal', sans-serif;
+    background-color: rgba(217, 255, 255, 0.2);
+  }
+
+  @extend %padding-lr-15;
+
+  >.row {
+    height: 100%;
+  }
+
+  height: 100vh;
+}
+
+
+
+.content-select-language {
+  position: absolute;
+  top: 2vw;
+  right: 5vw;
+}
+
+.container-form-login {
+  >.form {
+    width: 25vw;
+  }
+}
+
+.form-login {
+  .form-check {
+    line-height: 23px;
+  }
+}
+
+.title-form {
+  h2 {
+    font-size: 2vw;
+    margin-bottom: 9px;
+
+    i {
+      color: #fecd4a;
+    }
+  }
+
+  p {
+    font-size: 1vw;
+    color: #a3a3a3;
+  }
+}
+
+.container-form-login .form {
+  width: 27vw;
+}
+
+.custom-alert {
+  padding: 5px 10px;
+  margin-top: 10px;
+}
+
+/* start responsive */
+// Medium devices (tablets, 768px and up)
+@media (max-width:992px) {}
+
+// Small devices
+@media (max-width: 768px) {
+  .container-form-login .form {
+    width: 40vw;
+  }
+
+  .title-form h2 {
+    font-size: 3vw;
+  }
+
+  .title-form p {
+    font-size: 2vw;
+  }
+}
+
+// extra Small devices
+@media (max-width: 575px) {
+  .container-form-login .form {
+    width: 84vw;
+  }
+}
+
+/* End responsive */
