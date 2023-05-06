@@ -16,12 +16,12 @@ import { TranslateService } from '@ngx-translate/core';
 
 
 
-
 @Component({
   selector: 'app-list-tasks',
   templateUrl: './list-tasks.component.html',
   styleUrls: ['./list-tasks.component.scss']
 })
+
 export class ListTasksComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 
@@ -31,12 +31,10 @@ export class ListTasksComponent implements OnInit, OnDestroy {
   isLoading = true;
   loading: any = {};
   public translate = inject(TranslateService);
-
   @Select(AllTasksState.allTasks) allTasks$!: Observable<any[]>;
   @Select(AllTasksState.massageDeleteTaks) massageDeleteTaks$!: Observable<string | null>;
   @Select(AllTasksState.tasksLoaded) tasksLoaded$!: Observable<boolean>;
   @Select(AllTasksState.totalItems) totalItems$!: Observable<number>;
-
 
   private store = inject(Store);
   public dialog = inject(MatDialog);
@@ -55,6 +53,7 @@ export class ListTasksComponent implements OnInit, OnDestroy {
     limit: 10
   };
   users: any[] = [
+
     { name: "Mohamed", id: "6452a0749bdca9984acf10f8" },
     { name: "islam", id: "6452a6e09bdca9984acf111a" },
     { name: "Ahmed", id: "6452a0e79bdca9984acf10fe" },
@@ -94,10 +93,12 @@ export class ListTasksComponent implements OnInit, OnDestroy {
     };
 
     this.createForm();
+
     this.allTasks$.subscribe((res: UsersModel[]) => {
       console.log(res, res);
       this.dataSource = this.mappingTasks(res);
     });
+
 
     this.massageDeleteTaks$.subscribe(res => {
       if (res != null) {
@@ -111,6 +112,7 @@ export class ListTasksComponent implements OnInit, OnDestroy {
       console.log(totalItems)
     })
     this.store.dispatch(new GetAllTasks(this.filteration)).subscribe({
+
       next: res => {
         this.isLoading = false;
       },
@@ -196,6 +198,7 @@ export class ListTasksComponent implements OnInit, OnDestroy {
         this.store.dispatch(new GetAllTasks(this.filteration));
         break;
     }
+
   }
   deleteRow(id: string) {
     let objIndex = this.dataSource.findIndex((obj => obj._id === id));
@@ -210,6 +213,7 @@ export class ListTasksComponent implements OnInit, OnDestroy {
           this.dataSource[objIndex].loading = false;
         },
       })
+
       //Logic to delete the item
     }
 
@@ -242,4 +246,5 @@ export class ListTasksComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.filteration = {};
   }
+
 }

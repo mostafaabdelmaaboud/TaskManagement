@@ -23,18 +23,31 @@ export class LoginComponent implements OnInit {
   @Select(AuthState.loginIsLoading) stateisLogin$!: Observable<boolean>;
   selectedLang: string = "en";
   loginForm!: FormGroup;
+<<<<<<< HEAD
 
+=======
+  langs = [
+    { value: 'ar', viewValue: 'Arabic' },
+    { value: 'en', viewValue: 'English' },
+  ];
+>>>>>>> 1d7c48d0e3be976f4a475297d7a898e5d4c2c6bd
   public translate = inject(TranslateService);
   private fb = inject(FormBuilder);
   private store = inject(Store);
   private toastr = inject(ToastrService);
   private router = inject(Router);
+<<<<<<< HEAD
   langs = [
     { value: 'ar', viewValue: this.translate.instant("login.arabic") },
     { value: 'en', viewValue: this.translate.instant("login.english") },
   ];
   constructor(private error: HandleErrorService, translate: TranslateService) {
     this.selectedLang = localStorage.getItem("currentLang") || "en";
+=======
+  constructor(private error: HandleErrorService) {
+    this.selectedLang = localStorage.getItem("currentLang") || "en";
+    this.changeLanguageSelect(this.selectedLang);
+>>>>>>> 1d7c48d0e3be976f4a475297d7a898e5d4c2c6bd
     this.translate.setDefaultLang(this.selectedLang);
     this.translate.use(this.selectedLang);
     this.createForm()
@@ -65,12 +78,17 @@ export class LoginComponent implements OnInit {
       this.isLoading = load;
     })
 
+<<<<<<< HEAD
     this.translate.onLangChange.subscribe((lang) => {
       console.log("lang", lang.translations.login.english);
       this.langs[0].viewValue = lang.translations.login.arabic;
       this.langs[1].viewValue = lang.translations.login.english;
 
     })
+=======
+
+
+>>>>>>> 1d7c48d0e3be976f4a475297d7a898e5d4c2c6bd
   }
   formGet(fonrmControl: string) {
     return this.loginForm.get(fonrmControl);
@@ -80,8 +98,26 @@ export class LoginComponent implements OnInit {
     document.documentElement.lang = selectLang.value;
     this.translate.use(selectLang.value);
     localStorage.setItem("currentLang", selectLang.value);
+<<<<<<< HEAD
   }
 
+=======
+    this.changeLanguageSelect(selectLang.value)
+  }
+  changeLanguageSelect(lang: string) {
+    if (lang === "ar") {
+      this.langs = [
+        { value: 'ar', viewValue: 'عربي' },
+        { value: 'en', viewValue: 'انجليزي' },
+      ]
+    } else {
+      this.langs = [
+        { value: 'ar', viewValue: 'Arabic' },
+        { value: 'en', viewValue: 'English' },
+      ];
+    }
+  }
+>>>>>>> 1d7c48d0e3be976f4a475297d7a898e5d4c2c6bd
   login() {
     if (this.loginForm.valid && !this.isLoading) {
       this.store.dispatch(new Login(this.loginForm.value)).subscribe(

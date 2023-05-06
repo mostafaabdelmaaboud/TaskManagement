@@ -38,7 +38,11 @@ export class AddTaskComponent implements OnInit {
   private error = inject(HandleErrorService);
   formValues!: any;
   closeDialog = false;
+<<<<<<< HEAD
   users: any[] = [
+=======
+  users: any = [
+>>>>>>> 1d7c48d0e3be976f4a475297d7a898e5d4c2c6bd
     { name: "Mohamed", id: "6452a0749bdca9984acf10f8" },
     { name: "islam", id: "6452a6e09bdca9984acf111a" },
     { name: "Ahmed", id: "6452a0e79bdca9984acf10fe" },

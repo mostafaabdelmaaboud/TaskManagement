@@ -4,7 +4,11 @@ import { Injectable, inject } from "@angular/core";
 import { Action, Selector, State, StateContext } from "@ngxs/store";
 import { AddTask, DeleteTask, GetAllTasks, UpdateTask } from "../actions/allTasks.actions";
 import { ListTasksService } from "../../services/list-tasks.service";
+<<<<<<< HEAD
 import { AddTaskModel, Filteration, UsersModel } from '../../context/DTOs';
+=======
+import { AddTaskModel, UsersModel } from '../../context/DTOs';
+>>>>>>> 1d7c48d0e3be976f4a475297d7a898e5d4c2c6bd
 
 export interface AllTasksModel {
   tasks: UsersModel[],
@@ -56,16 +60,22 @@ export interface DeleteTaskModel {
 })
 @Injectable()
 export class AllTasksState {
+<<<<<<< HEAD
   tasksData: Filteration | null = null;
+=======
+>>>>>>> 1d7c48d0e3be976f4a475297d7a898e5d4c2c6bd
   @Selector()
   static allTasks(state: AllTasksModel) {
     return state.tasks;
   }
   @Selector()
+<<<<<<< HEAD
   static totalItems(state: AllTasksModel) {
     return state.totalItems;
   }
   @Selector()
+=======
+>>>>>>> 1d7c48d0e3be976f4a475297d7a898e5d4c2c6bd
   static tasksLoaded(state: AllTasksModel) {
     return state.tasksLoaded;
   }
@@ -85,6 +95,7 @@ export class AllTasksState {
   private tasksService = inject(ListTasksService);
   constructor() { }
   @Action(GetAllTasks)
+<<<<<<< HEAD
   getAllTasks({ patchState }: StateContext<AllTasksModel>, { payload }: GetAllTasks) {
     patchState({ tasksLoaded: true });
     // this.tasksData = payload;
@@ -96,6 +107,11 @@ export class AllTasksState {
       this.tasksData = null
     }
     return this.tasksService.getTasks(this.tasksData).pipe(
+=======
+  getAllTasks({ patchState }: StateContext<AllTasksModel>) {
+    patchState({ tasksLoaded: true })
+    return this.tasksService.getTasks().pipe(
+>>>>>>> 1d7c48d0e3be976f4a475297d7a898e5d4c2c6bd
       tap(res => {
 
         patchState({
@@ -133,7 +149,11 @@ export class AllTasksState {
           }
 
         });
+<<<<<<< HEAD
         dispatch(new GetAllTasks(this.tasksData));
+=======
+        dispatch(new GetAllTasks());
+>>>>>>> 1d7c48d0e3be976f4a475297d7a898e5d4c2c6bd
       }),
       catchError(err => {
         patchState({
@@ -165,7 +185,11 @@ export class AllTasksState {
           }
 
         });
+<<<<<<< HEAD
         dispatch(new GetAllTasks(this.tasksData));
+=======
+        dispatch(new GetAllTasks());
+>>>>>>> 1d7c48d0e3be976f4a475297d7a898e5d4c2c6bd
       }),
       catchError(err => {
         patchState({
@@ -200,7 +224,11 @@ export class AllTasksState {
           }
 
         });
+<<<<<<< HEAD
         dispatch(new GetAllTasks(this.tasksData));
+=======
+        dispatch(new GetAllTasks());
+>>>>>>> 1d7c48d0e3be976f4a475297d7a898e5d4c2c6bd
 
       }),
       catchError(err => {
