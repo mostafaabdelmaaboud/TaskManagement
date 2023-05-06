@@ -16,10 +16,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ConfirmationComponent } from './components/confirmation/confirmation.component';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
-<<<<<<< HEAD
 import { MatPaginatorModule } from '@angular/material/paginator';
-=======
->>>>>>> 1d7c48d0e3be976f4a475297d7a898e5d4c2c6bd
+
 
 @NgModule({
   declarations: [
@@ -38,10 +36,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatDatepickerModule,
     MatNativeDateModule,
     MatSelectModule,
-<<<<<<< HEAD
     MatPaginatorModule,
-=======
->>>>>>> 1d7c48d0e3be976f4a475297d7a898e5d4c2c6bd
+
     MatProgressSpinnerModule
 
   ]

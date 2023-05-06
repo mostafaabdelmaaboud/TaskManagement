@@ -17,10 +17,8 @@ import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { HeadersInterceptor } from './interceptors/headers.interceptor';
 import { ErrorCatchingInterceptor } from './interceptors/error-catching.interceptor';
 import { AllTasksState } from './dashboard/task-admin/store/state/allTasks.state';
-<<<<<<< HEAD
 import { MatPaginatorIntl } from '@angular/material/paginator';
-=======
->>>>>>> 1d7c48d0e3be976f4a475297d7a898e5d4c2c6bd
+
 
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');

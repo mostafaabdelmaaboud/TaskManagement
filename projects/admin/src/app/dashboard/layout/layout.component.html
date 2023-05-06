@@ -1,10 +1,7 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
   <div class="container">
-<<<<<<< HEAD
     <a class="navbar-brand" href="#">{{"tasks.tasks" | translate}}</a>
-=======
-    <a class="navbar-brand" href="#">Tasks</a>
->>>>>>> 1d7c48d0e3be976f4a475297d7a898e5d4c2c6bd
+
     <button class="navbar-toggler" type="button" (click)="collapse.toggle()" [attr.aria-expanded]="!isCollapsed"
       aria-controls="collapseExample" aria-controls="navbarSupportedContent" aria-expanded="false"
       aria-label="Toggle navigation">
@@ -13,7 +10,6 @@
     <div class="collapse navbar-collapse" #collapse="ngbCollapse" [(ngbCollapse)]="isCollapsed">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-<<<<<<< HEAD
           <a class="nav-link active" aria-current="page" href="#">{{"tasks.alltasks" | translate}}</a>
         </li>
         <li class="nav-item">
@@ -31,15 +27,7 @@
         </mat-form-field>
       </div>
       <button mat-raised-button color="primary" (click)="logout()">{{"tasks.logout" | translate}}</button>
-=======
-          <a class="nav-link active" aria-current="page" href="#">All Tasks</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Users</a>
-        </li>
-      </ul>
-      <button mat-raised-button color="primary" (click)="logout()">logout</button>
->>>>>>> 1d7c48d0e3be976f4a475297d7a898e5d4c2c6bd
+
     </div>
   </div>
 </nav>

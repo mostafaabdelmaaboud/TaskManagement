@@ -36,7 +36,6 @@ export interface UserID {
   username: string;
   _id: string;
 }
-<<<<<<< HEAD
 
 export interface Filteration {
   keyword?: string;
@@ -47,5 +46,4 @@ export interface Filteration {
   page?: number,
   limit?: number
 }
-=======
->>>>>>> 1d7c48d0e3be976f4a475297d7a898e5d4c2c6bd
+

@@ -20,11 +20,9 @@ body {
   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
-<<<<<<< HEAD
 
 
-=======
->>>>>>> 1d7c48d0e3be976f4a475297d7a898e5d4c2c6bd
+
 .contentSpinner {
   position: absolute;
   top: 0;
@@ -51,7 +49,6 @@ body {
   display: none;
 }
 
-<<<<<<< HEAD
 .layOut-language {
   margin-right: 26px;
 }
@@ -67,10 +64,7 @@ html:lang(ar) {
     margin-left: 26px;
   }
 
-=======
-/* start component login lang ar */
-html:lang(ar) {
->>>>>>> 1d7c48d0e3be976f4a475297d7a898e5d4c2c6bd
+
   .container-login .inner-text-title .title::before {
     left: initial !important;
     right: -2.5vw;
@@ -117,7 +111,6 @@ html:lang(ar) {
     right: initial;
     left: 5vw;
   }
-<<<<<<< HEAD
 
   .me-auto {
     margin-left: auto;
@@ -127,8 +120,7 @@ html:lang(ar) {
   .dialog-footer {
     direction: rtl;
   }
-=======
->>>>>>> 1d7c48d0e3be976f4a475297d7a898e5d4c2c6bd
+
 }
 
 .columnActionTable {
@@ -136,7 +128,6 @@ html:lang(ar) {
   padding: 0 !important;
 }
 
-<<<<<<< HEAD
 .mat-paginator-page-size-select {
   margin: 0 !important;
   width: 65px !important;
@@ -156,10 +147,7 @@ html:lang(ar) {
 
 /*Start Responsive */
 // Start responsive mat-table
-=======
-/* End component login lang ar */
-/*Start Responsive */
->>>>>>> 1d7c48d0e3be976f4a475297d7a898e5d4c2c6bd
+
 .mobile-label {
   display: none !important;
 }
@@ -168,7 +156,6 @@ html:lang(ar) {
   display: block !important;
 }
 
-<<<<<<< HEAD
 @media(max-width: 992px) {
   .layOut-language {
     width: initial;
@@ -182,8 +169,7 @@ html:lang(ar) {
     }
   }
 }
-=======
->>>>>>> 1d7c48d0e3be976f4a475297d7a898e5d4c2c6bd
+
 
 @media(max-width: 768px) {
 
@@ -255,8 +241,6 @@ html:lang(ar) {
 
 }
 
-<<<<<<< HEAD
 // End responsive mat-table
-=======
->>>>>>> 1d7c48d0e3be976f4a475297d7a898e5d4c2c6bd
+
 /*End Responsive */
