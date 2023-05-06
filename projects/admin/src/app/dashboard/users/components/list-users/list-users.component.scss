@@ -1,0 +1,43 @@
+.containerListTasks {
+  padding-top: 45px;
+}
+
+.header {
+  padding-bottom: 23px;
+  text-align: right;
+}
+
+
+.columnActionTable button {
+  margin: 0 4px;
+}
+
+.image-td {
+  width: 150px;
+
+  img {
+    display: block;
+    margin: 15px;
+  }
+
+}
+
+:host ::ng-deep .mat-row {
+  position: relative;
+}
+
+.row-spinner {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  height: 100%;
+  align-items: center;
+}
+
+.containerListTasks {
+  padding-bottom: 25px;
+}

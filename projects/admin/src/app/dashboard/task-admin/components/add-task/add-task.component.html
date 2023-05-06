@@ -17,7 +17,7 @@
       </mat-form-field>
 
       <mat-form-field class="w-100" appearance="fill">
-        <mat-label>User {{"tasks.user" | translate}}</mat-label>
+        <mat-label>{{"tasks.user" | translate}}</mat-label>
         <mat-select formControlName="userId">
           <mat-option *ngFor="let user of users" [value]="user.id">
             {{user.name}}
@@ -61,7 +61,8 @@
       </mat-form-field>
     </div>
     <div mat-dialog-actions class="dialog-footer">
-      <button mat-raised-button cdkFocusInitial color="primary" type="submit">{{data ? 'Update' : 'Create'}}</button>
+      <button mat-raised-button cdkFocusInitial color="primary" type="submit">{{data ? ("tasks.update" | translate) :
+        ("tasks.update" | translate)}}</button>
       <button mat-raised-button cdkFocusInitial color="warn" type="button" (click)="onNoClick()">{{"tasks.close" |
         translate}}</button>
     </div>
