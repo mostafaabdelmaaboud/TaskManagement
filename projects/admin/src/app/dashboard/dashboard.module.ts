@@ -14,6 +14,7 @@ import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   declarations: [
     LayoutComponent
+
   ],
   imports: [
     CommonModule,

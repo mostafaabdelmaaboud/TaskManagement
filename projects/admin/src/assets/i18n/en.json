@@ -27,15 +27,30 @@
     "search": "Search",
     "byuser": "By User",
     "status": "Status",
+    "statusis": "status is",
     "enteradaterange": "Enter a date range",
     "no": "No",
     "position": "Position",
-    "title": "Title",
+    "title": "title",
     "user": "User",
     "deadline": "deadline",
     "update": "Update",
     "delete": "Delete",
-    "actions": "actions"
+    "actions": "actions",
+    "addnewtask": "Add New Task",
+    "titleis": "title is",
+    "required": "required",
+    "minimunlengthfivecharacters": "minimun length 5 characters",
+    "useris": "User is",
+    "deadlinedate": "deadline Date",
+    "deadlinedateis": "deadline Date is",
+    "address": "Address",
+    "Addressis": "Address is",
+    "close": "close",
+    "create": "Create",
+    "nofileuploadedyet": "No file uploaded yet.",
+    "discardyourchanges": "Are You Sure That You Want To Discard Your Changes",
+    "yes": "Yes"
   },
   "MAT_PAGINATOR": {
     "ITEMS_PER_PAGE": "Items per page",
@@ -44,5 +59,11 @@
     "LAST_PAGE": "Last Page",
     "FIRST_PAGE": "First Page",
     "PREVIOUS_PAGE": "Previous Page"
+  },
+  "users": {
+    "username": "username",
+    "assignedTasks": "assigned Tasks",
+    "role": "role",
+    "name": "name"
   }
 }

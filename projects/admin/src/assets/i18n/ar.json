@@ -27,6 +27,7 @@
     "search": "بحث",
     "byuser": "من قبل المستخدم",
     "status": "حالة",
+    "statusis": "الوضع",
     "enteradaterange": "أدخل نطاقًا زمنيًا",
     "no": "لا",
     "position": "موضع",
@@ -35,7 +36,21 @@
     "deadline": "موعد التسليم",
     "update": "تحديث",
     "delete": "مسح",
-    "actions": "أجراءات"
+    "actions": "أجراءات",
+    "addnewtask": "إضافة مهمة جديدة",
+    "titleis": "العنوان هو",
+    "required": "مطلوب",
+    "minimunlengthfivecharacters": "الحد الأدنى لطول 5 أحرف",
+    "useris": "المستخدم هو",
+    "deadlinedate": "الموعد النهائي",
+    "deadlinedateis": "الموعد النهائي هو",
+    "address": "عنوان",
+    "Addressis": "العنوان هو",
+    "close": "غلق",
+    "create": "اضافه",
+    "nofileuploadedyet": "لم يتم تحميل أي ملف حتى الآن.",
+    "discardyourchanges": "هل أنت متأكد أنك تريد تجاهل التغييرات الخاصة بك",
+    "yes": "Yes"
   },
   "MAT_PAGINATOR": {
     "ITEMS_PER_PAGE": "مواد لكل صفحة",
@@ -44,5 +59,11 @@
     "LAST_PAGE": "الصفحة الأخيرة",
     "FIRST_PAGE": "الصفحة الأولى",
     "PREVIOUS_PAGE": "الصفحة السابقة"
+  },
+  "users": {
+    "username": "اسم المستخدم",
+    "assignedTasks": "المهام المعينة",
+    "role": "دور",
+    "name": "الاسم"
   }
 }

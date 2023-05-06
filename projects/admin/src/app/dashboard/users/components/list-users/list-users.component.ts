@@ -1,47 +1,43 @@
-import { Component, OnInit, inject, OnDestroy, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { MatPaginator, MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
+import { DeleteUser, GetAllUsers } from '../../store/actions/allUsers.actions';
+import { UsersModel } from '../../context/DTOs';
+import * as moment from 'moment';
+import { AllUsersState } from '../../store/state/allUsers.state';
 import { Select, Store } from '@ngxs/store';
-import { AllTasksState } from '../../store/state/allTasks.state';
-import { Observable, Subscription, debounceTime } from 'rxjs';
-import { DeleteTask, GetAllTasks } from '../../store/actions/allTasks.actions';
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AddTaskComponent } from '../add-task/add-task.component';
-import { Filteration, ListUsersModel, UsersModel } from '../../context/DTOs';
+import { Observable, debounceTime } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'projects/admin/src/environments/environment';
-import { HandleErrorService } from 'projects/admin/src/app/services/handle-error.service';
+import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import * as moment from 'moment';
-import { MatPaginator, MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
-import { TranslateService } from '@ngx-translate/core';
-
-
+import { UpdateUserComponent } from '../update-user/update-user.component';
 
 @Component({
-  selector: 'app-list-tasks',
-  templateUrl: './list-tasks.component.html',
-  styleUrls: ['./list-tasks.component.scss'],
+  selector: 'app-list-users',
+  templateUrl: './list-users.component.html',
+  styleUrls: ['./list-users.component.scss'],
   providers: [
     MatPaginatorIntl
   ]
 })
+export class ListUsersComponent implements OnInit, OnDestroy {
 
-export class ListTasksComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 
-  displayedColumns: string[] = ['position', 'title', 'user', 'deadline', 'status', 'actions'];
+  displayedColumns: string[] = ['position', 'username', 'email', 'status', 'role', 'actions'];
   dataSource: UsersModel[] = [];
   linkServer = environment.baseApi;
   isLoading = true;
   loading: any = {};
   public translate = inject(TranslateService);
-  @Select(AllTasksState.allTasks) allTasks$!: Observable<any[]>;
-  @Select(AllTasksState.massageDeleteTaks) massageDeleteTaks$!: Observable<string | null>;
-  @Select(AllTasksState.tasksLoaded) tasksLoaded$!: Observable<boolean>;
-  @Select(AllTasksState.totalItems) totalItems$!: Observable<number>;
+  @Select(AllUsersState.allUsers) allTasks$!: Observable<any[]>;
+  @Select(AllUsersState.massageDeleteUser) massageDeleteTaks$!: Observable<string | null>;
+  @Select(AllUsersState.usersLoaded) tasksLoaded$!: Observable<boolean>;
+  @Select(AllUsersState.totalItems) totalItems$!: Observable<number>;
 
   private store = inject(Store);
   public dialog = inject(MatDialog);
-  private error = inject(HandleErrorService);
   private toastr = inject(ToastrService);
   private fb = inject(FormBuilder);
   length = 0;
@@ -51,12 +47,11 @@ export class ListTasksComponent implements OnInit, OnDestroy {
   pageEvent!: PageEvent;
 
   formFilteration!: FormGroup;
-  filteration: Filteration = {
+  filteration: any = {
     page: 1,
     limit: 10
   };
   users: any[] = [
-
     { name: "Mohamed", id: "6452a0749bdca9984acf10f8" },
     { name: "islam", id: "6452a6e09bdca9984acf111a" },
     { name: "Ahmed", id: "6452a0e79bdca9984acf10fe" },
@@ -77,12 +72,10 @@ export class ListTasksComponent implements OnInit, OnDestroy {
       this.paginationTranslate();
     });
     this.createForm();
-
     this.allTasks$.subscribe((res: UsersModel[]) => {
       console.log(res, res);
       this.dataSource = this.mappingTasks(res);
     });
-
 
     this.massageDeleteTaks$.subscribe(res => {
       if (res != null) {
@@ -95,8 +88,7 @@ export class ListTasksComponent implements OnInit, OnDestroy {
       this.length = totalItems;
       console.log(totalItems)
     })
-    this.store.dispatch(new GetAllTasks(this.filteration)).subscribe({
-
+    this.store.dispatch(new GetAllUsers(this.filteration)).subscribe({
       next: res => {
         this.isLoading = false;
       },
@@ -104,36 +96,10 @@ export class ListTasksComponent implements OnInit, OnDestroy {
         this.isLoading = false;
       }
     });
-    this.formFilteration.get("keyword")?.valueChanges.pipe(debounceTime(1000)).subscribe(formCotrol => {
-      this.prepareFilteration("keyword", formCotrol);
+    this.formFilteration.get("name")?.valueChanges.pipe(debounceTime(1000)).subscribe(formCotrol => {
+      this.prepareFilteration("name", formCotrol);
     });
-    this.formFilteration.get("userId")?.valueChanges.subscribe(formCotrol => {
-      this.prepareFilteration("userId", formCotrol);
 
-    });
-    this.formFilteration.get("status")?.valueChanges.subscribe(formCotrol => {
-      // console.log("formCotrol status", formCotrol);
-      this.prepareFilteration("status", formCotrol);
-
-    });
-    this.formFilteration.get("range")?.valueChanges.subscribe(formCotrol => {
-      console.log("formCotrol range", formCotrol);
-      this.filteration.fromDate = null;
-      this.filteration.toDate = null;
-
-      let formatDate = formCotrol;
-      if (formCotrol.fromDate != null) {
-        this.filteration.fromDate = moment(formCotrol.fromDate).format("DD-MM-YYYY");
-      }
-
-      if (formCotrol.toDate != null && formCotrol.fromDate != null) {
-        this.filteration.toDate = moment(formCotrol.toDate).format("DD-MM-YYYY");
-        if (this.filteration.toDate != this.filteration.fromDate) {
-          this.prepareFilteration("toDate", this.filteration.fromDate);
-
-        }
-      }
-    });
 
   }
   paginationTranslate() {
@@ -158,13 +124,7 @@ export class ListTasksComponent implements OnInit, OnDestroy {
 
   createForm() {
     this.formFilteration = this.fb.group({
-      keyword: [""],
-      userId: [""],
-      status: [""],
-      range: this.fb.group({
-        fromDate: [null],
-        toDate: [null]
-      })
+      name: [""]
     })
   }
   handlePageEvent(e: PageEvent) {
@@ -175,37 +135,25 @@ export class ListTasksComponent implements OnInit, OnDestroy {
     this.filteration.page = this.pageIndex + 1;
     this.filteration.limit = this.pageSize;
 
-    this.store.dispatch(new GetAllTasks(this.filteration))
+    this.store.dispatch(new GetAllUsers(this.filteration))
   }
   prepareFilteration(type: string, value: any) {
     switch (type) {
-      case "keyword":
-        this.filteration.keyword = value;
-        this.store.dispatch(new GetAllTasks(this.filteration));
-        break;
-      case "userId":
-        this.filteration.userId = value;
-        this.store.dispatch(new GetAllTasks(this.filteration));
-        break;
-      case "status":
-        this.filteration.status = value;
-        this.store.dispatch(new GetAllTasks(this.filteration));
-        break;
-      case "toDate":
-        this.store.dispatch(new GetAllTasks(this.filteration));
+      case "name":
+        this.filteration.name = value;
+        this.store.dispatch(new GetAllUsers(this.filteration));
         break;
       default:
-        this.store.dispatch(new GetAllTasks(this.filteration));
+        this.store.dispatch(new GetAllUsers(this.filteration));
         break;
     }
-
   }
   deleteRow(id: string) {
     let objIndex = this.dataSource.findIndex((obj => obj._id === id));
     let conf = confirm("Want to delete?");
     if (conf) {
       this.dataSource[objIndex].loading = true;
-      this.store.dispatch(new DeleteTask(id)).subscribe({
+      this.store.dispatch(new DeleteUser(id)).subscribe({
         next: data => {
           this.dataSource[objIndex].loading = false;
         },
@@ -213,36 +161,22 @@ export class ListTasksComponent implements OnInit, OnDestroy {
           this.dataSource[objIndex].loading = false;
         },
       })
-
       //Logic to delete the item
     }
 
   }
   mappingTasks(data: UsersModel[]): UsersModel[] {
-    let newTasks: UsersModel[] | any = data.map((item) => {
-      if (item.userId == null) {
-        return null;
-      }
+    let newTasks: UsersModel[] = data.map(item => {
       return {
         ...item,
-        loading: false,
-        user: item.userId.username
+        loading: false
       }
-
-    }).filter((item) => item !== null);
-    return newTasks;
-  }
-  openDialog(): void {
-    const dialogRef = this.dialog.open(AddTaskComponent, {
-      width: "40vw"
     });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
+    return newTasks
   }
+
   updateRow(element: UsersModel) {
-    const dialogRef = this.dialog.open(AddTaskComponent, {
+    const dialogRef = this.dialog.open(UpdateUserComponent, {
       width: "40vw",
       data: element
     });
@@ -251,5 +185,4 @@ export class ListTasksComponent implements OnInit, OnDestroy {
     this.filteration = {};
 
   }
-
 }

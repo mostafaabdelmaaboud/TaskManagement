@@ -64,6 +64,16 @@ html:lang(ar) {
     margin-left: 26px;
   }
 
+<<<<<<< HEAD
+=======
+  .mat-form-field {
+    direction: rtl;
+  }
+
+  .headerAddTask {
+    flex-direction: row-reverse;
+  }
+>>>>>>> admin
 
   .container-login .inner-text-title .title::before {
     left: initial !important;
