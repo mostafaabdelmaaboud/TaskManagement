@@ -35,7 +35,18 @@
     "deadline": "موعد التسليم",
     "update": "تحديث",
     "delete": "مسح",
-    "actions": "أجراءات"
+    "actions": "أجراءات",
+    "addnewtask": "إضافة مهمة جديدة",
+    "titleis": "العنوان هو",
+    "required": "مطلوب",
+    "minimunlengthfivecharacters": "الحد الأدنى لطول 5 أحرف",
+    "useris": "المستخدم هو",
+    "deadlinedate": "الموعد النهائي",
+    "deadlinedateis": "الموعد النهائي هو",
+    "address": "عنوان",
+    "Addressis": "العنوان هو",
+    "close": "غلق",
+    "nofileuploadedyet": "لم يتم تحميل أي ملف حتى الآن."
   },
   "MAT_PAGINATOR": {
     "ITEMS_PER_PAGE": "مواد لكل صفحة",

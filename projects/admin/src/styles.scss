@@ -63,6 +63,14 @@ html:lang(ar) {
     margin-left: 26px;
   }
 
+  .mat-form-field {
+    direction: rtl;
+  }
+
+  .headerAddTask {
+    flex-direction: row-reverse;
+  }
+
   .container-login .inner-text-title .title::before {
     left: initial !important;
     right: -2.5vw;

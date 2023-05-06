@@ -1,7 +1,7 @@
-import { Component, OnInit, inject, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnInit, inject, OnDestroy, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { AllTasksState } from '../../store/state/allTasks.state';
-import { Observable, debounceTime } from 'rxjs';
+import { Observable, Subscription, debounceTime } from 'rxjs';
 import { DeleteTask, GetAllTasks } from '../../store/actions/allTasks.actions';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AddTaskComponent } from '../add-task/add-task.component';
@@ -11,7 +11,7 @@ import { HandleErrorService } from 'projects/admin/src/app/services/handle-error
 import { ToastrService } from 'ngx-toastr';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import * as moment from 'moment';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
 import { TranslateService } from '@ngx-translate/core';
 
 
@@ -20,7 +20,10 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-list-tasks',
   templateUrl: './list-tasks.component.html',
-  styleUrls: ['./list-tasks.component.scss']
+  styleUrls: ['./list-tasks.component.scss'],
+  providers: [
+    MatPaginatorIntl
+  ]
 })
 export class ListTasksComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
@@ -31,12 +34,10 @@ export class ListTasksComponent implements OnInit, OnDestroy {
   isLoading = true;
   loading: any = {};
   public translate = inject(TranslateService);
-
   @Select(AllTasksState.allTasks) allTasks$!: Observable<any[]>;
   @Select(AllTasksState.massageDeleteTaks) massageDeleteTaks$!: Observable<string | null>;
   @Select(AllTasksState.tasksLoaded) tasksLoaded$!: Observable<boolean>;
   @Select(AllTasksState.totalItems) totalItems$!: Observable<number>;
-
 
   private store = inject(Store);
   public dialog = inject(MatDialog);
@@ -65,34 +66,15 @@ export class ListTasksComponent implements OnInit, OnDestroy {
     { name: "Complete", id: 1 },
     { name: "In-Prossing", id: 2 },
   ]
-  constructor() { }
+  constructor(
+    public _MatPaginatorIntl: MatPaginatorIntl
+  ) { }
 
   ngOnInit(): void {
-
-    this.paginator._intl.itemsPerPageLabel = this.translate.instant("MAT_PAGINATOR.ITEMS_PER_PAGE");
-    this.paginator._intl.nextPageLabel = this.translate.instant("MAT_PAGINATOR.NEXT_PAGE");
-    this.paginator._intl.lastPageLabel = this.translate.instant("MAT_PAGINATOR.LAST_PAGE");
-    this.paginator._intl.firstPageLabel = this.translate.instant("MAT_PAGINATOR.FIRST_PAGE");
-    this.paginator._intl.previousPageLabel = this.translate.instant("MAT_PAGINATOR.PREVIOUS_PAGE");
-    // this.translate.onLangChange.subscribe((lang) => {
-    //   debugger;
-    //   this.paginator._intl.itemsPerPageLabel = lang.translations.MAT_PAGINATOR.ITEMS_PER_PAGE;
-    //   // this.paginator._changePageSize
-    //   // this.translatePaginator(lang.translations.MAT_PAGINATOR);
-
-    // });
-    this.paginator._intl.getRangeLabel = (page: number, pageSize: number, length: number): string => {
-      const of = this.translate ? this.translate.instant("MAT_PAGINATOR.OF") : "of";
-      if (length === 0 || pageSize === 0) {
-        return "0 " + "of" + " " + length;
-      }
-      length = Math.max(length, 0);
-      const startIndex = page * pageSize > length ? (Math.ceil(length / pageSize) - 1) * pageSize : page * pageSize;
-
-      const endIndex = Math.min(startIndex + pageSize, length);
-      return startIndex + 1 + " - " + endIndex + " " + "من" + " " + length;
-    };
-
+    this.paginationTranslate();
+    this.translate.onLangChange.subscribe((lang) => {
+      this.paginationTranslate();
+    });
     this.createForm();
     this.allTasks$.subscribe((res: UsersModel[]) => {
       console.log(res, res);
@@ -148,10 +130,26 @@ export class ListTasksComponent implements OnInit, OnDestroy {
         }
       }
     });
-    // this.formFilteration.get("range.toDate")?.valueChanges.subscribe(formCotrol => {
-    //   console.log("formCotrol toDate", formCotrol)
 
-    // });
+  }
+  paginationTranslate() {
+    this._MatPaginatorIntl.itemsPerPageLabel = this.translate.instant("MAT_PAGINATOR.ITEMS_PER_PAGE");
+    this._MatPaginatorIntl.nextPageLabel = this.translate.instant("MAT_PAGINATOR.NEXT_PAGE");
+    this._MatPaginatorIntl.lastPageLabel = this.translate.instant("MAT_PAGINATOR.LAST_PAGE");
+    this._MatPaginatorIntl.firstPageLabel = this.translate.instant("MAT_PAGINATOR.FIRST_PAGE");
+    this._MatPaginatorIntl.previousPageLabel = this.translate.instant("MAT_PAGINATOR.PREVIOUS_PAGE");
+    this._MatPaginatorIntl.getRangeLabel = (page: number, pageSize: number, length: number): string => {
+      const of = this.translate ? this.translate.instant("MAT_PAGINATOR.OF") : "of";
+      if (length === 0 || pageSize === 0) {
+        return "0 " + of + " " + length;
+      }
+      length = Math.max(length, 0);
+      const startIndex = page * pageSize > length ? (Math.ceil(length / pageSize) - 1) * pageSize : page * pageSize;
+
+      const endIndex = Math.min(startIndex + pageSize, length);
+      return startIndex + 1 + " - " + endIndex + " " + of + " " + length;
+    };
+    this._MatPaginatorIntl.changes.next();
   }
 
   createForm() {
@@ -241,5 +239,6 @@ export class ListTasksComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.filteration = {};
+
   }
 }

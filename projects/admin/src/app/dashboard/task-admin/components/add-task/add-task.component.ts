@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 import { HandleErrorService } from 'projects/admin/src/app/services/handle-error.service';
 import { AddTaskModel, UsersModel } from '../../context/DTOs';
 import { ConfirmationComponent } from '../confirmation/confirmation.component';
+import { TranslateService } from '@ngx-translate/core';
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
     const isSubmitted = form && form.submitted;
@@ -35,7 +36,8 @@ export class AddTaskComponent implements OnInit {
   matcher = new MyErrorStateMatcher();
   fileName = '';
   private toastr = inject(ToastrService);
-  private error = inject(HandleErrorService);
+  public translate = inject(TranslateService);
+
   formValues!: any;
   closeDialog = false;
   users: any[] = [
