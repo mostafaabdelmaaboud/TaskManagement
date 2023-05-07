@@ -1,4 +1,4 @@
-import { ErrorHandler, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -12,12 +12,11 @@ import { NgxsLoggerPluginModule } from '@ngxs/logger-plugin';
 import { environment } from '../environments/environment';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { ToastrModule } from 'ngx-toastr';
-import { AuthState } from './auth/store/state/login.state';
-import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
+
 import { HeadersInterceptor } from './interceptors/headers.interceptor';
 import { ErrorCatchingInterceptor } from './interceptors/error-catching.interceptor';
-import { AllTasksState } from './dashboard/task-admin/store/state/allTasks.state';
-import { MatPaginatorIntl } from '@angular/material/paginator';
+import { AuthState } from './auth/store/state/login.state';
+
 
 
 export function createTranslateLoader(http: HttpClient) {
@@ -33,7 +32,6 @@ export function createTranslateLoader(http: HttpClient) {
     BrowserAnimationsModule,
     HttpClientModule,
     ToastrModule.forRoot(),
-
     TranslateModule.forRoot({
       defaultLanguage: "en",
       loader: {
@@ -42,14 +40,9 @@ export function createTranslateLoader(http: HttpClient) {
         deps: [HttpClient]
       }
     }),
-    NgxsModule.forRoot([AllTasksState]),
-    NgxsReduxDevtoolsPluginModule.forRoot({
-      maxAge: 50
-    }),
-    NgxsLoggerPluginModule.forRoot({
-      // Do not log in production mode
-      disabled: environment.production
-    }),
+    NgxsModule.forRoot([AuthState]),
+    !environment.production ? NgxsReduxDevtoolsPluginModule.forRoot() : [],
+    !environment.production ? NgxsLoggerPluginModule.forRoot() : []
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HeadersInterceptor, multi: true },

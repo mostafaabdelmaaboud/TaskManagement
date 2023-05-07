@@ -1,7 +1,7 @@
 import { Component, OnInit, inject, OnDestroy, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { AllTasksState } from '../../store/state/allTasks.state';
-import { Observable, Subscription, debounceTime } from 'rxjs';
+import { Observable, Subscription, debounceTime, take } from 'rxjs';
 import { DeleteTask, GetAllTasks } from '../../store/actions/allTasks.actions';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AddTaskComponent } from '../add-task/add-task.component';
@@ -44,6 +44,7 @@ export class ListTasksComponent implements OnInit, OnDestroy {
   private error = inject(HandleErrorService);
   private toastr = inject(ToastrService);
   private fb = inject(FormBuilder);
+  subscription!: Subscription;
   length = 0;
   pageSize = 10;
   pageIndex = 0;
@@ -58,7 +59,6 @@ export class ListTasksComponent implements OnInit, OnDestroy {
   users: any[] = [
 
     { name: "Mohamed", id: "6452a0749bdca9984acf10f8" },
-    { name: "islam", id: "6452a6e09bdca9984acf111a" },
     { name: "Ahmed", id: "6452a0e79bdca9984acf10fe" },
     { name: "Mostafa", id: "6452a1049bdca9984acf1101" },
     { name: "shosho", id: "6452b8d3bd7e7eb41913875f" }
@@ -78,32 +78,36 @@ export class ListTasksComponent implements OnInit, OnDestroy {
     });
     this.createForm();
 
-    this.allTasks$.subscribe((res: UsersModel[]) => {
+    this.subscription = this.allTasks$.subscribe((res: UsersModel[]) => {
+
       console.log(res, res);
       this.dataSource = this.mappingTasks(res);
     });
 
 
-    this.massageDeleteTaks$.subscribe(res => {
-      if (res != null) {
-        this.toastr.success("Task Is Deleted", 'Success', {
-          timeOut: 2000
-        });
-      }
-    })
     this.totalItems$.subscribe(totalItems => {
+      debugger;
       this.length = totalItems;
       console.log(totalItems)
     })
-    this.store.dispatch(new GetAllTasks(this.filteration)).subscribe({
 
-      next: res => {
-        this.isLoading = false;
-      },
-      error: err => {
+    this.tasksLoaded$.subscribe(tasksLoaded => {
+      debugger;
+      if (!tasksLoaded) {
+        this.store.dispatch(new GetAllTasks(this.filteration)).subscribe({
+          next: res => {
+            this.isLoading = false;
+          },
+          error: err => {
+            this.isLoading = false;
+          }
+        });
+      } else {
         this.isLoading = false;
       }
-    });
+
+    })
+
     this.formFilteration.get("keyword")?.valueChanges.pipe(debounceTime(1000)).subscribe(formCotrol => {
       this.prepareFilteration("keyword", formCotrol);
     });
@@ -201,13 +205,18 @@ export class ListTasksComponent implements OnInit, OnDestroy {
 
   }
   deleteRow(id: string) {
+    debugger;
     let objIndex = this.dataSource.findIndex((obj => obj._id === id));
     let conf = confirm("Want to delete?");
     if (conf) {
       this.dataSource[objIndex].loading = true;
       this.store.dispatch(new DeleteTask(id)).subscribe({
         next: data => {
+          debugger;
           this.dataSource[objIndex].loading = false;
+          this.toastr.success("Task Is Deleted", 'Success', {
+            timeOut: 2000
+          });
         },
         error: err => {
           this.dataSource[objIndex].loading = false;
@@ -219,17 +228,27 @@ export class ListTasksComponent implements OnInit, OnDestroy {
 
   }
   mappingTasks(data: UsersModel[]): UsersModel[] {
+    debugger;
+    // let newTasks: UsersModel[] | any = data.map((item) => {
+    //   if (item.userId == null) {
+    //     return null;
+    //   }
+    //   return {
+    //     ...item,
+    //     loading: false,
+    //     user: item.userId.username
+    //   }
+
+    // }).filter((item) => item !== null);
     let newTasks: UsersModel[] | any = data.map((item) => {
-      if (item.userId == null) {
-        return null;
-      }
+      debugger;
       return {
         ...item,
         loading: false,
-        user: item.userId.username
+        user: item?.userId?.username || ""
       }
 
-    }).filter((item) => item !== null);
+    });
     return newTasks;
   }
   openDialog(): void {
@@ -249,7 +268,8 @@ export class ListTasksComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.filteration = {};
-
+    this.subscription.unsubscribe();
+    // this.store.reset({});
   }
 
 }

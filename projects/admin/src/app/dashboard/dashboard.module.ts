@@ -21,7 +21,6 @@ import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
     DashboardRoutingModule,
     SharedModule,
     NgbCollapseModule,
-    NgxsModule.forFeature([AuthState]),
     MatSelectModule
   ]
 })
