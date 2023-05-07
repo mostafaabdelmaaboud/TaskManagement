@@ -5,7 +5,7 @@ import { UsersModel } from '../../context/DTOs';
 import * as moment from 'moment';
 import { AllUsersState } from '../../store/state/allUsers.state';
 import { Select, Store } from '@ngxs/store';
-import { Observable, debounceTime } from 'rxjs';
+import { Observable, Subscription, debounceTime } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'projects/admin/src/environments/environment';
 import { MatDialog } from '@angular/material/dialog';
@@ -31,15 +31,17 @@ export class ListUsersComponent implements OnInit, OnDestroy {
   isLoading = true;
   loading: any = {};
   public translate = inject(TranslateService);
-  @Select(AllUsersState.allUsers) allTasks$!: Observable<any[]>;
+  @Select(AllUsersState.allUsers) allUsers$!: Observable<any[]>;
   @Select(AllUsersState.massageDeleteUser) massageDeleteTaks$!: Observable<string | null>;
-  @Select(AllUsersState.usersLoaded) tasksLoaded$!: Observable<boolean>;
+  @Select(AllUsersState.usersLoaded) usersLoaded$!: Observable<boolean>;
   @Select(AllUsersState.totalItems) totalItems$!: Observable<number>;
 
   private store = inject(Store);
   public dialog = inject(MatDialog);
   private toastr = inject(ToastrService);
   private fb = inject(FormBuilder);
+  subscription!: Subscription;
+
   length = 0;
   pageSize = 10;
   pageIndex = 0;
@@ -72,7 +74,8 @@ export class ListUsersComponent implements OnInit, OnDestroy {
       this.paginationTranslate();
     });
     this.createForm();
-    this.allTasks$.subscribe((res: UsersModel[]) => {
+
+    this.subscription = this.allUsers$.subscribe((res: UsersModel[]) => {
       console.log(res, res);
       this.dataSource = this.mappingTasks(res);
     });
@@ -88,16 +91,27 @@ export class ListUsersComponent implements OnInit, OnDestroy {
       this.length = totalItems;
       console.log(totalItems)
     })
-    this.store.dispatch(new GetAllUsers(this.filteration)).subscribe({
-      next: res => {
+    this.usersLoaded$.subscribe(usersLoaded => {
+      if (!usersLoaded) {
+        this.store.dispatch(new GetAllUsers(this.filteration)).subscribe({
+          next: res => {
+            this.isLoading = false;
+          },
+          error: err => {
+            this.isLoading = false;
+          }
+        });
+      } else {
         this.isLoading = false;
-      },
-      error: err => {
-        this.isLoading = false;
+
       }
-    });
+
+    })
+
+
     this.formFilteration.get("name")?.valueChanges.pipe(debounceTime(1000)).subscribe(formCotrol => {
-      this.prepareFilteration("name", formCotrol);
+      this.filteration.name = formCotrol;
+      this.store.dispatch(new GetAllUsers(this.filteration));
     });
 
 
@@ -137,17 +151,7 @@ export class ListUsersComponent implements OnInit, OnDestroy {
 
     this.store.dispatch(new GetAllUsers(this.filteration))
   }
-  prepareFilteration(type: string, value: any) {
-    switch (type) {
-      case "name":
-        this.filteration.name = value;
-        this.store.dispatch(new GetAllUsers(this.filteration));
-        break;
-      default:
-        this.store.dispatch(new GetAllUsers(this.filteration));
-        break;
-    }
-  }
+
   deleteRow(id: string) {
     let objIndex = this.dataSource.findIndex((obj => obj._id === id));
     let conf = confirm("Want to delete?");
@@ -166,7 +170,9 @@ export class ListUsersComponent implements OnInit, OnDestroy {
 
   }
   mappingTasks(data: UsersModel[]): UsersModel[] {
-    let newTasks: UsersModel[] = data.map(item => {
+    debugger;
+
+    let newTasks: UsersModel[] = data?.map(item => {
       return {
         ...item,
         loading: false
@@ -183,6 +189,8 @@ export class ListUsersComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     this.filteration = {};
+    this.subscription.unsubscribe();
+    // this.store.reset({});
 
   }
 }

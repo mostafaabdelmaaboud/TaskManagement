@@ -43,7 +43,7 @@ export interface DeleteUserModel {
   }
 })
 @State<DeleteUserModel>({
-  name: 'DeleteUser',
+  name: 'deleteUser',
   defaults: {
     deleteUser: {
       massage: null,
@@ -86,8 +86,6 @@ export class AllUsersState {
   constructor() { }
   @Action(GetAllUsers)
   getAllTasks({ patchState }: StateContext<AllUsersModel>, { payload }: GetAllUsers) {
-    patchState({ tasksLoaded: true });
-    // this.tasksData = payload;
     if (payload) {
       this.usersData = payload;
     } else if (this.usersData != null) {
@@ -100,7 +98,7 @@ export class AllUsersState {
 
         patchState({
           users: res.users,
-          tasksLoaded: false,
+          tasksLoaded: true,
           totalItems: res.totalItems
         })
       }),
@@ -149,12 +147,12 @@ export class AllUsersState {
     )
   }
   @Action(DeleteUser)
-  deleteTask({ patchState, dispatch, getState }: StateContext<DeleteUserModel>, { id }: DeleteUser) {
+  deleteUser({ patchState, dispatch, getState }: StateContext<DeleteUserModel>, { id }: DeleteUser) {
     patchState({
       deleteUser: {
-        ...getState().deleteUser,
         DeleteUserIsLoaded: true,
-        massage: null
+        massage: null,
+        isError: null
 
       }
     })

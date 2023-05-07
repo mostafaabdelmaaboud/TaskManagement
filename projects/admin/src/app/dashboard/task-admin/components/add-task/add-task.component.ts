@@ -42,7 +42,6 @@ export class AddTaskComponent implements OnInit {
   closeDialog = false;
   users: any[] = [
     { name: "Mohamed", id: "6452a0749bdca9984acf10f8" },
-    { name: "islam", id: "6452a6e09bdca9984acf111a" },
     { name: "Ahmed", id: "6452a0e79bdca9984acf10fe" },
     { name: "Mostafa", id: "6452a1049bdca9984acf1101" },
     { name: "shosho", id: "6452b8d3bd7e7eb41913875f" }

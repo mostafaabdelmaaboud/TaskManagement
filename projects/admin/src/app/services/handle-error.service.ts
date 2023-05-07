@@ -49,15 +49,18 @@ export class HandleErrorService {
       if (err.error.message != undefined) {
         errorMessage = err.error.message;
       }
-      if ((err?.status == 500 && err.error?.message == "jwt expired") || err?.status == 401) {
+      debugger;
 
+      if ((err?.status == 500 && err.error?.message == "jwt expired") || err?.status == 401) {
+        debugger;
+        this.store.dispatch(new Logout()).subscribe(logout => {
+          this.router.navigate(["/login"]);
+        });
         this.toastr.error(errorMessage, '', {
           timeOut: 2000,
           onActivateTick: true
         });
-        this.store.dispatch(new Logout()).subscribe(logout => {
-          this.router.navigate(["/login"]);
-        })
+
 
       } else {
         this.toastr.error(errorMessage, '', {

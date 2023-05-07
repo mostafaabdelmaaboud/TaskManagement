@@ -8,7 +8,7 @@ import { AddTaskModel, Filteration, UsersModel } from '../../context/DTOs';
 
 export interface AllTasksModel {
   tasks: UsersModel[],
-  tasksLoaded: Boolean,
+  tasksLoaded: boolean,
   totalItems: number
 }
 export interface CreateTaskModel {
@@ -86,7 +86,7 @@ export class AllTasksState {
   constructor() { }
   @Action(GetAllTasks)
   getAllTasks({ patchState }: StateContext<AllTasksModel>, { payload }: GetAllTasks) {
-    patchState({ tasksLoaded: true });
+
     // this.tasksData = payload;
     if (payload) {
       this.tasksData = payload;
@@ -97,12 +97,13 @@ export class AllTasksState {
     }
     return this.tasksService.getTasks(this.tasksData).pipe(
       tap(res => {
-
+        debugger;
         patchState({
           tasks: res.tasks,
-          tasksLoaded: false,
+          tasksLoaded: true,
           totalItems: res.totalItems
         })
+
       }),
       catchError(err => {
         patchState({
@@ -181,16 +182,18 @@ export class AllTasksState {
   }
   @Action(DeleteTask)
   deleteTask({ patchState, dispatch, getState }: StateContext<DeleteTaskModel>, { id }: DeleteTask) {
+    debugger;
     patchState({
       deleteTask: {
         ...getState().deleteTask,
-        DeleteTaskIsLoaded: true,
-        massage: null
+
+        DeleteTaskIsLoaded: true
 
       }
     })
     return this.tasksService.deleteTask(id).pipe(
       tap(res => {
+        debugger;
 
         patchState({
           deleteTask: {
@@ -200,6 +203,7 @@ export class AllTasksState {
           }
 
         });
+        debugger;
         dispatch(new GetAllTasks(this.tasksData));
 
       }),

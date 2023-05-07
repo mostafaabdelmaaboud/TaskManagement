@@ -17,6 +17,7 @@ import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
     SharedModule,
     MatSelectModule,
     NgxsModule.forFeature([AuthState])
+
   ]
 })
 export class AuthModule { }
