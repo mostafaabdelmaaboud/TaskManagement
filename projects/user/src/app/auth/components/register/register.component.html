@@ -1,0 +1,99 @@
+<div class="container-register">
+  <div class="row m-0">
+    <div class="col d-none d-sm-block p-0 background-grad-register position-relative">
+      <div class="background-side-register d-flex justify-content-center align-items-center">
+        <div class="inner-text-title">
+          <h1 class="title position-relative">
+            {{'login.taskdistribution' | translate}}
+            <span>{{'login.developers' | translate}}</span>
+          </h1>
+          <p class="p-0 parag">{{'login.youwillneverknow' | translate}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col container-form-register position-relative d-flex justify-content-center align-items-center">
+      <div class="content-select-language">
+        <mat-form-field appearance="fill">
+          <mat-label>{{'login.languages' | translate}}</mat-label>
+          <mat-select [(value)]="selectedLang" (selectionChange)="selectChange($event)">
+            <mat-option *ngFor="let lang of langs" [value]="lang.value">
+              {{lang.viewValue}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="form">
+        <div class="title-form">
+          <h2 class="head-form-register fw-bold">{{"register.register" | translate}} <i
+              class="fa-solid fa-hands-bubbles"></i>
+          </h2>
+          <!-- <p class="parg-form-login">{{"login.information" | translate}}</p> -->
+        </div>
+        <form class="form-register" [formGroup]="registerForm" (submit)="register()">
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label fw-bold">{{"users.username" | translate}}</label>
+            <input type="text" class="form-control" name="username" formControlName="username" id="exampleInputUername1"
+              aria-describedby="emailHelp">
+            <ng-container
+              *ngIf="(isSubmited && f['username'].invalid) || f['username'].errors && (f['username'].invalid && f['username'].dirty)">
+              <div *ngIf="f['username'].errors?.['required']" class="alert alert-danger custom-alert" role="alert">
+                {{"register.usernameisrequired" | translate}}
+              </div>
+
+            </ng-container>
+          </div>
+          <div class="mb-3">
+            <label for="exampleInputUername1" class="form-label fw-bold">{{"login.email" | translate}}</label>
+            <input type="email" class="form-control" name="email" formControlName="email" id="exampleInputUername1"
+              aria-describedby="emailHelp">
+
+            <ng-container
+              *ngIf="(isSubmited && f['email'].invalid) || f['email'].errors && (f['email'].invalid && f['email'].dirty)">
+              <div *ngIf="f['email'].errors?.['required']" class="alert alert-danger custom-alert" role="alert">
+                {{"login.emailisrequired" | translate}}
+              </div>
+              <div *ngIf="f['email'].errors?.['pattern']" class="alert alert-danger custom-alert" role="alert">
+                {{"login.pleaseenteryouremail" | translate}}
+              </div>
+            </ng-container>
+          </div>
+          <div formGroupName="passwords">
+            <div class="mb-3">
+              <label for="password" class="control-label fw-bold">{{"login.password" | translate}}</label>
+              <input type="password" class="form-control" formControlName="password" title="Please enter your password">
+              <!-- {{ registerForm.get('passwords.password')?.value| json}} -->
+              <div class="alert alert-danger custom-alert" role="alert"
+                *ngIf="(isSubmited && passwords('password')?.invalid) || passwords('password')?.hasError('required') && passwords('password')?.dirty">
+                {{"login.passwordisrequired" | translate}}</div>
+            </div>
+            <div class="mb-3">
+              <label for="confirmedPassword" class="control-label fw-bold">{{"register.confirmpassword" |
+                translate}}</label>
+              <input type="password" class="form-control" formControlName="confirm_password"
+                title="Please re-enter your password">
+              <p class="alert alert-danger custom-alert" role="alert"
+                *ngIf="(isSubmited && passwords('confirm_password')?.hasError('required')) || (passwords('confirm_password')?.hasError('required') && passwords('confirm_password')?.dirty)">
+                {{"register.confirmpasswordisrequired" | translate}}</p>
+              <div class="alert alert-danger custom-alert" role="alert"
+                *ngIf="passwords('confirm_password')?.hasError('mustMatch') && passwords('confirm_password')?.dirty">
+                {{"register.Passworddoesnotmatch" | translate}}</div>
+
+            </div>
+          </div>
+
+
+          <div class="mb-3 form-check">
+            <input type="checkbox" class="form-check-input" id="exampleCheck1">
+            <label class="form-check-label" for="exampleCheck1">{{"login.rememberMe" | translate}}</label>
+          </div>
+
+          <button type="submit" class="btn pe-auto btn-primary w-100 background-gradient-3E9 border-0">
+            <span *ngIf="isLoading" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+            <span class="visually-visible">{{ isLoading ? ('loading' | translate) : ('register.register' | translate)
+              }}</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -24,7 +24,6 @@ export class LoginComponent implements OnInit {
   selectedLang: string = "en";
   loginForm!: FormGroup;
 
-
   public translate = inject(TranslateService);
   private fb = inject(FormBuilder);
   private store = inject(Store);
@@ -36,7 +35,6 @@ export class LoginComponent implements OnInit {
   ];
   constructor() {
     this.selectedLang = localStorage.getItem("currentLang") || "en";
-
     this.translate.setDefaultLang(this.selectedLang);
     this.translate.use(this.selectedLang);
     this.createForm()
@@ -73,7 +71,6 @@ export class LoginComponent implements OnInit {
       this.langs[1].viewValue = lang.translations.login.english;
 
     })
-
   }
   formGet(fonrmControl: string) {
     return this.loginForm.get(fonrmControl);
@@ -84,7 +81,6 @@ export class LoginComponent implements OnInit {
     this.translate.use(selectLang.value);
     localStorage.setItem("currentLang", selectLang.value);
   }
-
 
   login() {
     if (this.loginForm.valid && !this.isLoading) {
