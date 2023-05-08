@@ -3,7 +3,7 @@ import { Inject, Injectable, Injector, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { ToastrService } from 'ngx-toastr';
-import { Logout } from '../auth/store/actions/login.actions';
+import { Logout } from '../auth/store/actions/auth.actions';
 
 @Injectable({
   providedIn: 'root'

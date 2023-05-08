@@ -11,7 +11,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AuthState } from './auth/store/state/login.state';
+import { AuthState } from './auth/store/state/auth.state';
 import { ErrorCatchingInterceptor } from './interceptors/error-catching.interceptor';
 import { HeadersInterceptor } from './interceptors/headers.interceptor';
 

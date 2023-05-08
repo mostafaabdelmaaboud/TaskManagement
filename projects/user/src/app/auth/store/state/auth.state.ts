@@ -1,5 +1,5 @@
 import { Action, Selector, State, StateContext } from "@ngxs/store";
-import { AuthStateModel, Login, Logout } from "../actions/login.actions";
+import { AuthStateModel, Login, Logout, Register } from "../actions/auth.actions";
 import { Injectable } from "@angular/core";
 import { LoginService } from "../../services/login.service";
 import { catchError, of, tap, throwError } from "rxjs";
@@ -43,9 +43,9 @@ export class AuthState {
   constructor(private authService: LoginService) { }
 
   @Action(Login)
-  login({ patchState }: StateContext<AuthStateModel>, action: Login) {
+  login({ patchState }: StateContext<AuthStateModel>, { payload }: Login) {
     patchState({ isLoading: true })
-    return this.authService.login(action.payload).pipe(
+    return this.authService.login(payload).pipe(
       tap(res => {
         patchState({
           token: res.token,
@@ -67,6 +67,33 @@ export class AuthState {
       })
     );
   }
+  @Action(Register)
+  register({ patchState }: StateContext<AuthStateModel>, { payload }: Register) {
+    patchState({ isLoading: true })
+    debugger;
+    return this.authService.register(payload).pipe(
+      tap(res => {
+        debugger;
+        patchState({
+          token: res.token,
+          userId: res.userId,
+          isLoading: false,
+          isSuccess: true,
+          isError: null
+        });
+      }),
+      catchError(err => {
+        patchState({
+          isLoading: false,
+          isSuccess: false,
+          isError: err
+        });
+        return throwError(() => err);
+
+      })
+    )
+  }
+
   @Action(Logout)
   logout({ patchState }: StateContext<AuthStateModel>) {
     localStorage.removeItem("token");

@@ -109,6 +109,41 @@
   margin-top: 10px;
 }
 
+.container-field {
+  .alert::before {
+    content: "";
+
+    display: block;
+    position: absolute;
+    top: -20px;
+    left: 7px;
+    border-width: 10px 10px 10px 10px;
+    border-style: solid;
+    border-color: transparent transparent #f8d7da transparent;
+  }
+
+  .alert {
+    position: absolute;
+    bottom: -5px;
+    margin: 0;
+    transform: translateY(100%);
+    -webkit-transform: translateY(100%);
+    -moz-transform: translateY(100%);
+    -ms-transform: translateY(100%);
+    -o-transform: translateY(100%);
+    right: 0;
+  }
+}
+
+.actions {
+  a {
+    font-size: 16px;
+    text-decoration: none;
+    margin-top: 7px;
+    display: inline-block;
+  }
+}
+
 /* start responsive */
 // Medium devices (tablets, 768px and up)
 @media (max-width:992px) {}

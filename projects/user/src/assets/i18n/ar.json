@@ -72,5 +72,9 @@
     "confirmpasswordisrequired": "تأكيد كلمة المرور مطلوب",
     "Passworddoesnotmatch": "كلمة السر غير متطابقة",
     "register": "تسجيل الدخول"
+  },
+  "auth": {
+    "haveanacount": "Have an Acount?",
+    "createacount": "Create Acount?"
   }
 }

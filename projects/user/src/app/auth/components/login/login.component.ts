@@ -2,9 +2,9 @@ import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core'
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateService, TranslateStore } from '@ngx-translate/core';
 import { Select, Store } from '@ngxs/store';
-import { AuthState } from '../../store/state/login.state';
+import { AuthState } from '../../store/state/auth.state';
 import { Observable } from 'rxjs';
-import { Login } from '../../store/actions/login.actions';
+import { Login } from '../../store/actions/auth.actions';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -17,7 +17,7 @@ import { HandleErrorService } from '../../../services/handle-error.service';
 })
 export class LoginComponent implements OnInit {
   isLoading = false;
-
+  isSubmited = false;
   @ViewChild('dangerTpl') danger!: ElementRef;
 
   @Select(AuthState.loginIsLoading) stateisLogin$!: Observable<boolean>;
@@ -83,6 +83,7 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    this.isSubmited = true;
     if (this.loginForm.valid && !this.isLoading) {
       this.store.dispatch(new Login(this.loginForm.value)).subscribe(
         res => {
@@ -90,11 +91,9 @@ export class LoginComponent implements OnInit {
           this.toastr.success('Valid Email', 'Success', {
             timeOut: 2000
           });
+          this.isSubmited = false;
           localStorage.setItem("token", res.auth.token);
           this.router.navigate(["/dashboard"])
-        },
-        err => {
-          // this.error.handleError(err);
         }
       );
     }

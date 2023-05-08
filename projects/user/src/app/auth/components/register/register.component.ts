@@ -1,11 +1,12 @@
 import { Component, ElementRef, OnInit, ViewChild, inject } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
-import { AuthState } from '../../store/state/login.state';
+import { AuthState } from '../../store/state/auth.state';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
+import { Register } from '../../store/actions/auth.actions';
 
 @Component({
   selector: 'app-register',
@@ -64,16 +65,13 @@ export class RegisterComponent implements OnInit {
     return (group: AbstractControl) => {
       const control = group.get(controlName);
       const matchingControl = group.get(matchingControlName);
-      debugger;
       if (!control || !matchingControl) {
         return null;
       }
-
       // return if another validator has already found an error on the matchingControl
       if (matchingControl.errors && !matchingControl.errors['mustMatch']) {
         return null;
       }
-
       // set error on matchingControl if validation fails
       if (control.value !== matchingControl.value) {
         matchingControl.setErrors({ mustMatch: true });
@@ -94,7 +92,6 @@ export class RegisterComponent implements OnInit {
       console.log("lang", lang.translations.login.english);
       this.langs[0].viewValue = lang.translations.login.arabic;
       this.langs[1].viewValue = lang.translations.login.english;
-
     })
   }
   formGet(fonrmControl: string) {
@@ -106,32 +103,32 @@ export class RegisterComponent implements OnInit {
     this.translate.use(selectLang.value);
     localStorage.setItem("currentLang", selectLang.value);
   }
-  passwordConfirming(c: FormGroup): any {
 
-    // if (c.get('password').value !== c.get('confirm_password').value) {
-    //   return { invalid: true };
-    // }
-    return { invalid: false };
-
-  }
   register() {
     debugger;
     this.isSubmited = true;
 
     if (this.registerForm.valid && !this.isLoading) {
-      // this.store.dispatch(new Login(this.loginForm.value)).subscribe(
-      //   res => {
-      //     this.loginForm.reset();
-      //     this.toastr.success('Valid Email', 'Success', {
-      //       timeOut: 2000
-      //     });
-      //     localStorage.setItem("token", res.auth.token);
-      //     this.router.navigate(["/dashboard"])
-      //   },
-      //   err => {
-      //     // this.error.handleError(err);
-      //   }
-      // );
+      let formRegister = {
+        email: this.registerForm.value["email"],
+        password: this.registerForm.value["passwords"].password,
+        username: this.registerForm.value["username"],
+        role: "user"
+      }
+      debugger;
+      this.store.dispatch(new Register(formRegister)).subscribe(
+        res => {
+          debugger;
+          this.registerForm.reset();
+          this.toastr.success('Successful Registration', 'Success', {
+            timeOut: 2000
+          });
+          this.isSubmited = false;
+
+          localStorage.setItem("token", res.auth.token);
+          this.router.navigate(["/dashboard"])
+        }
+      );
     }
   }
 

@@ -30,7 +30,7 @@
           <!-- <p class="parg-form-login">{{"login.information" | translate}}</p> -->
         </div>
         <form class="form-register" [formGroup]="registerForm" (submit)="register()">
-          <div class="mb-3">
+          <div class="mb-3 container-field position-relative">
             <label for="exampleInputEmail1" class="form-label fw-bold">{{"users.username" | translate}}</label>
             <input type="text" class="form-control" name="username" formControlName="username" id="exampleInputUername1"
               aria-describedby="emailHelp">
@@ -42,7 +42,7 @@
 
             </ng-container>
           </div>
-          <div class="mb-3">
+          <div class="mb-3 container-field position-relative">
             <label for="exampleInputUername1" class="form-label fw-bold">{{"login.email" | translate}}</label>
             <input type="email" class="form-control" name="email" formControlName="email" id="exampleInputUername1"
               aria-describedby="emailHelp">
@@ -58,7 +58,7 @@
             </ng-container>
           </div>
           <div formGroupName="passwords">
-            <div class="mb-3">
+            <div class="mb-3 container-field position-relative">
               <label for="password" class="control-label fw-bold">{{"login.password" | translate}}</label>
               <input type="password" class="form-control" formControlName="password" title="Please enter your password">
               <!-- {{ registerForm.get('passwords.password')?.value| json}} -->
@@ -66,7 +66,7 @@
                 *ngIf="(isSubmited && passwords('password')?.invalid) || passwords('password')?.hasError('required') && passwords('password')?.dirty">
                 {{"login.passwordisrequired" | translate}}</div>
             </div>
-            <div class="mb-3">
+            <div class="mb-3 container-field position-relative">
               <label for="confirmedPassword" class="control-label fw-bold">{{"register.confirmpassword" |
                 translate}}</label>
               <input type="password" class="form-control" formControlName="confirm_password"
@@ -80,18 +80,20 @@
 
             </div>
           </div>
-
-
           <div class="mb-3 form-check">
             <input type="checkbox" class="form-check-input" id="exampleCheck1">
             <label class="form-check-label" for="exampleCheck1">{{"login.rememberMe" | translate}}</label>
           </div>
+          <div class="actions text-center">
+            <button type="submit" class="btn pe-auto btn-primary w-100 background-gradient-3E9 border-0">
+              <span *ngIf="isLoading" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+              <span class="visually-visible">{{ isLoading ? ('loading' | translate) : ('register.register' | translate)
+                }}</span>
+            </button>
+            <a routerLink="/login">{{'auth.haveanacount' | translate}}</a>
 
-          <button type="submit" class="btn pe-auto btn-primary w-100 background-gradient-3E9 border-0">
-            <span *ngIf="isLoading" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-            <span class="visually-visible">{{ isLoading ? ('loading' | translate) : ('register.register' | translate)
-              }}</span>
-          </button>
+          </div>
+
         </form>
       </div>
     </div>
