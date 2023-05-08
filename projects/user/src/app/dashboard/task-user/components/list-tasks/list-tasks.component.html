@@ -1,185 +1,44 @@
-<div class="container-users-tasks d-flex">
+<div class="container-users-tasks position-relative d-flex">
   <div class="container">
     <div class="col">
       <div class="row">
-        <div class="section-card col-12 col-lg-3 col-md-4 col-sm-6">
-          <mat-card class="example-card d-flex">
+        <div class="section-card col-12 col-lg-3 col-md-4 col-sm-6"
+          *ngFor="let task of tasksData | paginate: {
+            itemsPerPage: 8, currentPage: filteration.page, totalItems:totalItems}; let index = index; trackBy:identify">
+          <mat-card class="example-card d-flex position-relative">
             <section class="section-one">
               <mat-card-header>
-                <mat-card-title>Hydrogn</mat-card-title>
+                <mat-card-title>{{task.title}}</mat-card-title>
               </mat-card-header>
-              <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
+              <img mat-card-image width="150px" [src]="baseApi + '/' + task.image" alt="Photo of a Shiba Inu">
               <mat-card-content>
-                <p class="card-dealline">Dead-Line Date: 10-11-2022</p>
+                <p class="card-dealline">Dead-Line Date: {{task.deadline}}</p>
                 <p>1.0079</p>
               </mat-card-content>
             </section>
 
             <mat-card-actions>
               <button mat-raised-button>Details</button>
-              <button mat-raised-button color="primary">Complete</button>
+              <button mat-raised-button color="primary" (click)="complete(task)">Complete</button>
 
 
             </mat-card-actions>
-          </mat-card>
-        </div>
-        <div class="section-card col-12 col-lg-3 col-md-4 col-sm-6">
-          <mat-card class="example-card d-flex">
-            <section class="section-one">
-              <mat-card-header>
-                <mat-card-title>Hydrogn</mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <p class="card-dealline">Dead-Line Date: 10-11-2022</p>
-                <p>1.0079</p>
-              </mat-card-content>
-            </section>
-            <mat-card-actions>
-              <button mat-raised-button>Details</button>
-              <button mat-raised-button color="primary">Complete</button>
-            </mat-card-actions>
-          </mat-card>
-        </div>
-        <div class="section-card col-12 col-lg-3 col-md-4 col-sm-6">
-          <mat-card class="example-card d-flex">
-            <section class="section-one">
-              <mat-card-header>
-                <mat-card-title>Hydrogn</mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <p class="card-dealline">Dead-Line Date: 10-11-2022</p>
-                <p>1.0079</p>
-              </mat-card-content>
-            </section>
-            <mat-card-actions>
-              <button mat-raised-button>Details</button>
-              <button mat-raised-button color="primary">Complete</button>
-            </mat-card-actions>
-          </mat-card>
-        </div>
-        <div class="section-card col-12 col-lg-3 col-md-4 col-sm-6">
-          <mat-card class="example-card d-flex">
-            <section class="section-one">
-              <mat-card-header>
-                <mat-card-title>Hydrogn</mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <p class="card-dealline">Dead-Line Date: 10-11-2022</p>
-                <p>1.0079</p>
-              </mat-card-content>
-            </section>
-            <mat-card-actions>
-              <button mat-raised-button>Details</button>
-              <button mat-raised-button color="primary">Complete</button>
-            </mat-card-actions>
-          </mat-card>
-        </div>
-        <div class="section-card col-12 col-lg-3 col-md-4 col-sm-6">
-          <mat-card class="example-card d-flex">
-            <section class="section-one">
-              <mat-card-header>
-                <mat-card-title>Hydrogn</mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <p class="card-dealline">Dead-Line Date: 10-11-2022</p>
-                <p>1.0079</p>
-              </mat-card-content>
-            </section>
-            <mat-card-actions>
-              <button mat-raised-button>Details</button>
-              <button mat-raised-button color="primary">Complete</button>
-            </mat-card-actions>
-          </mat-card>
-        </div>
-        <div class="section-card col-12 col-lg-3 col-md-4 col-sm-6">
-          <mat-card class="example-card d-flex">
-            <section class="section-one">
-              <mat-card-header>
-                <mat-card-title>Hydrogn</mat-card-title>
-              </mat-card-header>
-              <!-- <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu"> -->
-              <mat-card-content>
-                <p class="card-dealline">Dead-Line Date: 10-11-2022</p>
-                <p>1.0079</p>
-              </mat-card-content>
-            </section>
+            <div class="card-spinner d-flex" *ngIf="task.isLoading">
+              <mat-spinner diameter="60" [style.width.px]="60" [style.height.px]="60"></mat-spinner>
 
-            <mat-card-actions>
-              <button mat-raised-button>Details</button>
-              <button mat-raised-button color="primary">Complete</button>
+            </div>
+          </mat-card>
 
+        </div>
+        <div class="paginate" *ngIf="!isLoading">
+          <pagination-controls (pageChange)="changePage($event)"></pagination-controls>
 
-            </mat-card-actions>
-          </mat-card>
         </div>
-        <div class="section-card col-12 col-lg-3 col-md-4 col-sm-6">
-          <mat-card class="example-card d-flex">
-            <section class="section-one">
-              <mat-card-header>
-                <mat-card-title>Hydrogn</mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <p class="card-dealline">Dead-Line Date: 10-11-2022</p>
-                <p>1.0079</p>
-              </mat-card-content>
-            </section>
-            <mat-card-actions>
-              <button mat-raised-button>Details</button>
-              <button mat-raised-button color="primary">Complete</button>
-            </mat-card-actions>
-          </mat-card>
+        <div class="container-spinner d-flex" *ngIf="isLoading">
+          <mat-spinner diameter="60" [style.width.px]="60" [style.height.px]="60"></mat-spinner>
+
         </div>
-        <div class="section-card col-12 col-lg-3 col-md-4 col-sm-6">
-          <mat-card class="example-card d-flex">
-            <section class="section-one">
-              <mat-card-header>
-                <mat-card-title>Hydrogn</mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <p class="card-dealline">Dead-Line Date: 10-11-2022</p>
-                <p>1.0079</p>
-              </mat-card-content>
-            </section>
-            <mat-card-actions>
-              <button mat-raised-button>Details</button>
-              <button mat-raised-button color="primary">Complete</button>
-            </mat-card-actions>
-          </mat-card>
-        </div>
-        <div class="section-card col-12 col-lg-3 col-md-4 col-sm-6">
-          <mat-card class="example-card d-flex">
-            <section class="section-one">
-              <mat-card-header>
-                <mat-card-title>Hydrogn</mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <p class="card-dealline">Dead-Line Date: 10-11-2022</p>
-                <p>1.0079</p>
-              </mat-card-content>
-            </section>
-            <mat-card-actions>
-              <button mat-raised-button>Details</button>
-              <button mat-raised-button color="primary">Complete</button>
-            </mat-card-actions>
-          </mat-card>
-        </div>
-        <div class="section-card col-12 col-lg-3 col-md-4 col-sm-6">
-          <mat-card class="example-card d-flex">
-            <section class="section-one">
-              <mat-card-header>
-                <mat-card-title>Hydrogn</mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <p class="card-dealline">Dead-Line Date: 10-11-2022</p>
-                <p>1.0079</p>
-              </mat-card-content>
-            </section>
-            <mat-card-actions>
-              <button mat-raised-button>Details</button>
-              <button mat-raised-button color="primary">Complete</button>
-            </mat-card-actions>
-          </mat-card>
-        </div>
+
       </div>
     </div>
 

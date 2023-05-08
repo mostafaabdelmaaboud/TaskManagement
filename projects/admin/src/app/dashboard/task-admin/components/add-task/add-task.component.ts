@@ -37,14 +37,15 @@ export class AddTaskComponent implements OnInit {
   fileName = '';
   private toastr = inject(ToastrService);
   public translate = inject(TranslateService);
-
   formValues!: any;
   closeDialog = false;
   users: any[] = [
     { name: "Mohamed", id: "6452a0749bdca9984acf10f8" },
     { name: "Ahmed", id: "6452a0e79bdca9984acf10fe" },
     { name: "Mostafa", id: "6452a1049bdca9984acf1101" },
-    { name: "shosho", id: "6452b8d3bd7e7eb41913875f" }
+    { name: "shosho", id: "6452b8d3bd7e7eb41913875f" },
+    { name: "SayedAli", id: "64593d6d13d1eb89fc1dbe71" },
+    { name: "mostafaAbdelMaaboud", id: "6459416213d1eb89fc1dbe96" },
   ]
   constructor(
     public dialogRef: MatDialogRef<AddTaskComponent>,
@@ -64,6 +65,7 @@ export class AddTaskComponent implements OnInit {
     if (this.data) {
       this.fileName = this.data.image;
     }
+
   }
   creatForm() {
     this.newTaskForm = this.fb.group({
@@ -108,6 +110,7 @@ export class AddTaskComponent implements OnInit {
     let form: FormData = this.prepareFormData();
 
     if (this.newTaskForm.valid) {
+      debugger;
       if (this.data) {
         this.store.dispatch(new UpdateTask(form, this.data._id)).subscribe({
           next: res => {

@@ -15,7 +15,7 @@ export class HeadersInterceptor implements HttpInterceptor {
     const reqLogin = !request.url.includes("auth/login");
     const token = localStorage.getItem("token");
     let modifiedUrl = request;
-    if (reqLogin && token) {
+    if (token) {
       modifiedUrl = request.clone({
         headers: request.headers.set("Authorization", "Bearer " + token)
       })
