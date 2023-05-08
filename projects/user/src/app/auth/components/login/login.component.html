@@ -33,7 +33,8 @@
             <label for="exampleInputEmail1" class="form-label fw-bold">{{"login.email" | translate}}</label>
             <input type="email" class="form-control" name="email" formControlName="email" id="exampleInputEmail1"
               aria-describedby="emailHelp">
-            <ng-container *ngIf="f['email'].errors && (f['email'].invalid && f['email'].dirty)">
+            <ng-container
+              *ngIf="(isSubmited && f['email'].invalid) || f['email'].errors && (f['email'].invalid && f['email'].dirty)">
               <div *ngIf="f['email'].errors?.['required']" class="alert alert-danger custom-alert" role="alert">
                 {{"login.emailisrequired" | translate}}
               </div>
@@ -46,7 +47,8 @@
             <label for="exampleInputPassword1" class="form-label fw-bold">{{"login.password" | translate}}</label>
             <input type="password" formControlName="password" name="password" class="form-control"
               id="exampleInputPassword1">
-            <ng-container *ngIf="f['password'].errors && (f['password'].invalid && f['password'].dirty)">
+            <ng-container
+              *ngIf="(isSubmited && f['password'].invalid) || f['password'].errors && (f['password'].invalid && f['password'].dirty)">
               <div *ngIf="f['password'].errors?.['required']" class="alert alert-danger custom-alert" role="alert">
                 {{"login.passwordisrequired" | translate}}
               </div>
@@ -59,11 +61,15 @@
             <input type="checkbox" class="form-check-input" id="exampleCheck1">
             <label class="form-check-label" for="exampleCheck1">{{"login.rememberMe" | translate}}</label>
           </div>
+          <div class="actions text-center">
+            <button type="submit" class="btn pe-auto btn-primary w-100 background-gradient-3E9 border-0">
+              <span *ngIf="isLoading" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+              <span class="visually-visible">{{ isLoading ? ('loading' | translate) : ('Login' | translate) }}</span>
+            </button>
+            <a routerLink="/register">{{'auth.createacount' | translate}}</a>
 
-          <button type="submit" class="btn pe-auto btn-primary w-100 background-gradient-3E9 border-0">
-            <span *ngIf="isLoading" class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-            <span class="visually-visible">{{ isLoading ? ('loading' | translate) : ('Login' | translate) }}</span>
-          </button>
+          </div>
+
         </form>
       </div>
     </div>

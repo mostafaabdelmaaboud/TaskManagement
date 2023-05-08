@@ -72,5 +72,9 @@
     "confirmpasswordisrequired": "confirm Password is required",
     "Passworddoesnotmatch": "Password does not match",
     "register": "Register"
+  },
+  "auth": {
+    "haveanacount": "Have an Acount?",
+    "createacount": "Create Acount?"
   }
 }

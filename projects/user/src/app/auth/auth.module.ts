@@ -5,7 +5,7 @@ import { LoginComponent } from './components/login/login.component';
 import { SharedModule } from '../shared/shared.module';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxsModule } from '@ngxs/store';
-import { AuthState } from './store/state/login.state';
+import { AuthState } from './store/state/auth.state';
 import { NgxsStoragePluginModule } from '@ngxs/storage-plugin';
 import { RegisterComponent } from './components/register/register.component';
 @NgModule({

@@ -17,7 +17,7 @@ import { HandleErrorService } from '../../../services/handle-error.service';
 })
 export class LoginComponent implements OnInit {
   isLoading = false;
-
+  isSubmited = false;
   @ViewChild('dangerTpl') danger!: ElementRef;
 
   @Select(AuthState.loginIsLoading) stateisLogin$!: Observable<boolean>;
@@ -83,6 +83,7 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
+    this.isSubmited = true;
     if (this.loginForm.valid && !this.isLoading) {
       this.store.dispatch(new Login(this.loginForm.value)).subscribe(
         res => {
@@ -90,6 +91,8 @@ export class LoginComponent implements OnInit {
           this.toastr.success('Valid Email', 'Success', {
             timeOut: 2000
           });
+          this.isSubmited = false;
+
           localStorage.setItem("token", res.auth.token);
           this.router.navigate(["/dashboard"])
         },

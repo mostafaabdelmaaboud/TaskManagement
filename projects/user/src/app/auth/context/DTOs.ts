@@ -5,7 +5,13 @@ export interface IntLogin {
   role: string
 }
 
-export interface Authlogin {
+export interface IntRegister {
+  email: string;
+  password: string;
+  username: string;
+  role: string;
+}
+export interface Auth {
   token: null,
   userId: null,
 }
