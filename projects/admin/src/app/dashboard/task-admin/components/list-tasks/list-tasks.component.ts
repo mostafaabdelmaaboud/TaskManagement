@@ -246,7 +246,8 @@ export class ListTasksComponent implements OnInit, OnDestroy {
   }
   openDialog(): void {
     const dialogRef = this.dialog.open(AddTaskComponent, {
-      width: "40vw"
+      width: "40vw",
+      data: null
     });
 
     dialogRef.afterClosed().subscribe(result => {

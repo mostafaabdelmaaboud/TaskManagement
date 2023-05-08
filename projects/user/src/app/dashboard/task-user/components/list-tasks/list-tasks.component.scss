@@ -44,3 +44,32 @@
 
   height: 100%;
 }
+
+.paginate {
+  display: flex;
+  justify-content: center;
+  padding: 15px 0 25px 0;
+
+  .ngx-pagination {
+    margin: 0 !important;
+  }
+}
+
+.container-spinner,
+.card-spinner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.container-spinner {
+  height: calc(100vh - 69px);
+}
+
+.card-spinner {
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+}
