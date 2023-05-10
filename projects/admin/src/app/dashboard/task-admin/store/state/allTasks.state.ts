@@ -101,7 +101,6 @@ export class AllTasksState {
     return this.tasksService.getTasks(this.tasksData).pipe(
 
       tap(res => {
-        debugger;
         patchState({
           tasks: res.tasks,
           tasksLoaded: true,
@@ -188,7 +187,6 @@ export class AllTasksState {
   }
   @Action(DeleteTask)
   deleteTask({ patchState, dispatch, getState }: StateContext<DeleteTaskModel>, { id }: DeleteTask) {
-    debugger;
     patchState({
       deleteTask: {
         ...getState().deleteTask,
@@ -199,8 +197,6 @@ export class AllTasksState {
     })
     return this.tasksService.deleteTask(id).pipe(
       tap(res => {
-        debugger;
-
         patchState({
           deleteTask: {
             massage: res.massage,
@@ -209,7 +205,6 @@ export class AllTasksState {
           }
 
         });
-        debugger;
         dispatch(new GetAllTasks(this.tasksData));
 
 

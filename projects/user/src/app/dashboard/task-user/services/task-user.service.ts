@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { filterTasksModel } from '../context/DTOs';
 import { environment } from 'projects/admin/src/environments/environment';
 import { Observable } from 'rxjs';
-import { AllTasksModel } from '../store/state/taskUser.state';
+import { AllTasksModel, TaskCompleteModel } from '../store/state/taskUser.state';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,10 @@ export class TaskUserService {
         params = params.set(key, value);
       })
     }
-    debugger;
     return this.http.get<AllTasksModel>(`${environment.baseApi}/tasks/user-tasks/${id}`, { params });
+  }
+  complete(id: string) {
+    return this.http.put<TaskCompleteModel['completeTask']>(`${environment.baseApi}/tasks/complete/`, { id: id });
+
   }
 }

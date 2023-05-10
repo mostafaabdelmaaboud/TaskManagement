@@ -114,7 +114,6 @@ export class AllUsersState {
   }
   @Action(UpdateUser)
   updateTask({ patchState, dispatch, getState }: StateContext<UpdateUserModel>, { payload }: UpdateUser) {
-    debugger;
     patchState({
       updateUser: {
         ...getState().updateUser,
@@ -123,7 +122,6 @@ export class AllUsersState {
     });
     return this.usersService.updateTask(payload).pipe(
       tap(res => {
-        debugger;
         patchState({
           updateUser: {
             massage: res.massage,

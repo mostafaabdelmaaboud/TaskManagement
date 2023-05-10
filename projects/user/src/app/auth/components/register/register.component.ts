@@ -105,7 +105,6 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
-    debugger;
     this.isSubmited = true;
 
     if (this.registerForm.valid && !this.isLoading) {
@@ -115,10 +114,8 @@ export class RegisterComponent implements OnInit {
         username: this.registerForm.value["username"],
         role: "user"
       }
-      debugger;
       this.store.dispatch(new Register(formRegister)).subscribe(
         res => {
-          debugger;
           this.registerForm.reset();
           this.toastr.success('Successful Registration', 'Success', {
             timeOut: 2000

@@ -17,6 +17,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ConfirmationComponent } from './components/confirmation/confirmation.component';
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { AllUsersState } from '../users/store/state/allUsers.state';
 
 
 @NgModule({
@@ -30,7 +31,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     TaskAdminRoutingModule,
     SharedModule,
     MatTableModule,
-    NgxsModule.forFeature([AllTasksState]),
+    NgxsModule.forFeature([AllTasksState, AllUsersState]),
     MatDialogModule,
     MatInputModule,
     MatDatepickerModule,

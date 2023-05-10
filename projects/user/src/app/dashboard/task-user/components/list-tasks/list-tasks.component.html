@@ -30,9 +30,11 @@
           </mat-card>
 
         </div>
-        <div class="paginate" *ngIf="!isLoading">
+        <div class="alert alert-danger" role="alert" *ngIf="!isLoading && tasksData.length == 0">
+          No Tasks Found Assgined
+        </div>
+        <div class="paginate" *ngIf="!isLoading && tasksData.length != 0">
           <pagination-controls (pageChange)="changePage($event)"></pagination-controls>
-
         </div>
         <div class="container-spinner d-flex" *ngIf="isLoading">
           <mat-spinner diameter="60" [style.width.px]="60" [style.height.px]="60"></mat-spinner>

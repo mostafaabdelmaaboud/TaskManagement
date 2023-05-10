@@ -13,7 +13,6 @@ export class AuthGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
     const authToken = localStorage.getItem("token");
-    debugger;
     if (authToken && (state.url === "/login" || state.url === "/register")) {
       this.router.navigate(["/dashboard"]);
       return false;

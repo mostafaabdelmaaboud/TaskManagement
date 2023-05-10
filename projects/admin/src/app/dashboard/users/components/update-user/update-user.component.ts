@@ -91,11 +91,9 @@ export class UpdateUserComponent implements OnInit {
 
   createTask() {
     this.selectedImage = true;
-    debugger;
     if (this.newTaskForm.valid) {
       this.store.dispatch(new UpdateUser(this.newTaskForm.value)).subscribe({
         next: res => {
-          debugger;
           this.dialogRef.close();
           this.toastr.success(res.users.updateUser.massage, 'Success', {
             timeOut: 2000
