@@ -70,10 +70,8 @@ export class AuthState {
   @Action(Register)
   register({ patchState }: StateContext<AuthStateModel>, { payload }: Register) {
     patchState({ isLoading: true })
-    debugger;
     return this.authService.register(payload).pipe(
       tap(res => {
-        debugger;
         patchState({
           token: res.token,
           userId: res.userId,

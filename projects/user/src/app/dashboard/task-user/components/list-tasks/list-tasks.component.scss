@@ -29,6 +29,7 @@
 :host ::ng-deep .mat-card-header {
   .mat-card-title {
     color: #3f51b5 !important;
+    word-break: break-all;
   }
 }
 

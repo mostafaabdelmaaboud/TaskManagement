@@ -103,9 +103,7 @@ export class ListUsersComponent implements OnInit, OnDestroy {
         });
       } else {
         this.isLoading = false;
-
       }
-
     })
 
 

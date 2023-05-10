@@ -63,8 +63,8 @@ export class ListTasksComponent implements OnInit, OnDestroy {
     { name: "shosho", id: "6452b8d3bd7e7eb41913875f" }
   ]
   status: any[] = [
-    { name: "Complete", id: 1 },
-    { name: "In-Prossing", id: 2 },
+    { name: "Complete", id: "Complete" },
+    { name: "In-Progress", id: "In-Progress" },
   ]
   constructor(
     public _MatPaginatorIntl: MatPaginatorIntl
@@ -82,12 +82,10 @@ export class ListTasksComponent implements OnInit, OnDestroy {
     });
 
     this.totalItems$.subscribe(totalItems => {
-      debugger;
       this.length = totalItems;
       console.log(totalItems)
     })
     this.tasksLoaded$.subscribe(tasksLoaded => {
-      debugger;
       if (!tasksLoaded) {
         this.store.dispatch(new GetAllTasks(this.filteration)).subscribe({
           next: res => {
@@ -199,14 +197,12 @@ export class ListTasksComponent implements OnInit, OnDestroy {
     }
   }
   deleteRow(id: string) {
-    debugger;
     let objIndex = this.dataSource.findIndex((obj => obj._id === id));
     let conf = confirm("Want to delete?");
     if (conf) {
       this.dataSource[objIndex].loading = true;
       this.store.dispatch(new DeleteTask(id)).subscribe({
         next: data => {
-          debugger;
           this.dataSource[objIndex].loading = false;
           this.toastr.success("Task Is Deleted", 'Success', {
             timeOut: 2000
@@ -221,20 +217,7 @@ export class ListTasksComponent implements OnInit, OnDestroy {
 
   }
   mappingTasks(data: UsersModel[]): UsersModel[] {
-    debugger;
-    // let newTasks: UsersModel[] | any = data.map((item) => {
-    //   if (item.userId == null) {
-    //     return null;
-    //   }
-    //   return {
-    //     ...item,
-    //     loading: false,
-    //     user: item.userId.username
-    //   }
-
-    // }).filter((item) => item !== null);
     let newTasks: UsersModel[] | any = data.map((item) => {
-      debugger;
       return {
         ...item,
         loading: false,
@@ -263,6 +246,5 @@ export class ListTasksComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.filteration = {};
     this.subscription.unsubscribe();
-    // this.store.reset({});
   }
 }

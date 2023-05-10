@@ -1,6 +1,6 @@
 export interface filterTasksModel {
   page: number;
-  limit: number;
+  limit?: number;
   status?: string;
 }
 export interface tasksModel {

@@ -14,7 +14,6 @@ export class LoginService {
     return this.http.post<Auth>(`${environment.baseApi}/auth/login`, model);
   }
   register(model: IntRegister): Observable<Auth> {
-    debugger;
     return this.http.post<Auth>(`${environment.baseApi}/auth/createAccount`, model);
   }
 }

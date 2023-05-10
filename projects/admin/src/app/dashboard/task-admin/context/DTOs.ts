@@ -24,7 +24,10 @@ export interface UsersModel {
   userId: UserID;
   _id: string;
 }
-
+export interface listUserID {
+  name: string,
+  id: string
+}
 export interface UserID {
   assignedTasks: number;
   createdAt: Date;

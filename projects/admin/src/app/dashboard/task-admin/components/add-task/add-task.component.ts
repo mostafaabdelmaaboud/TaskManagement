@@ -10,9 +10,11 @@ import { AddTask, UpdateTask } from '../../store/actions/allTasks.actions';
 import { AllTasksState } from '../../store/state/allTasks.state';
 import { ToastrService } from 'ngx-toastr';
 import { HandleErrorService } from 'projects/admin/src/app/services/handle-error.service';
-import { AddTaskModel, UsersModel } from '../../context/DTOs';
+import { AddTaskModel, UserID, UsersModel, listUserID } from '../../context/DTOs';
 import { ConfirmationComponent } from '../confirmation/confirmation.component';
 import { TranslateService } from '@ngx-translate/core';
+import { AllUsersState } from '../../../users/store/state/allUsers.state';
+import { GetAllUsers } from '../../../users/store/actions/allUsers.actions';
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
     const isSubmitted = form && form.submitted;
@@ -31,6 +33,8 @@ export class AddTaskComponent implements OnInit {
   isLoaded = false;
   @Select(AllTasksState.addTaskIsLoaded) addTaskIsLoaded$!: Observable<boolean>;
   @Select(AllTasksState.massageCreateTaks) massageCreateTaks$!: Observable<string | null>;
+  @Select(AllUsersState.usersLoaded) usersLoaded$!: Observable<boolean>;
+  @Select(AllUsersState.allUsers) allUsers$!: Observable<any[]>;
   selectedImage = false;
   newTaskForm!: FormGroup;
   matcher = new MyErrorStateMatcher();
@@ -39,14 +43,11 @@ export class AddTaskComponent implements OnInit {
   public translate = inject(TranslateService);
   formValues!: any;
   closeDialog = false;
-  users: any[] = [
-    { name: "Mohamed", id: "6452a0749bdca9984acf10f8" },
-    { name: "Ahmed", id: "6452a0e79bdca9984acf10fe" },
-    { name: "Mostafa", id: "6452a1049bdca9984acf1101" },
-    { name: "shosho", id: "6452b8d3bd7e7eb41913875f" },
-    { name: "SayedAli", id: "64593d6d13d1eb89fc1dbe71" },
-    { name: "mostafaAbdelMaaboud", id: "6459416213d1eb89fc1dbe96" },
-  ]
+  users: listUserID[] = []
+  filteration: any = {
+    page: 1,
+    limit: 10
+  };
   constructor(
     public dialogRef: MatDialogRef<AddTaskComponent>,
     public matDialig: MatDialog,
@@ -65,7 +66,27 @@ export class AddTaskComponent implements OnInit {
     if (this.data) {
       this.fileName = this.data.image;
     }
+    this.allUsers$.subscribe((res: UserID[]) => {
+      console.log(res, res);
+      this.users = this.mappingTasks(res);
+    });
+    this.usersLoaded$.subscribe(usersLoaded => {
+      if (!usersLoaded) {
+        this.store.dispatch(new GetAllUsers(this.filteration))
+      }
+    })
 
+  }
+  mappingTasks(data: UserID[]): any[] {
+
+    let newTasks: listUserID[] = data?.map(item => {
+      return {
+        name: item.username,
+        id: item._id
+
+      }
+    });
+    return newTasks
   }
   creatForm() {
     this.newTaskForm = this.fb.group({
@@ -110,7 +131,6 @@ export class AddTaskComponent implements OnInit {
     let form: FormData = this.prepareFormData();
 
     if (this.newTaskForm.valid) {
-      debugger;
       if (this.data) {
         this.store.dispatch(new UpdateTask(form, this.data._id)).subscribe({
           next: res => {
@@ -118,10 +138,6 @@ export class AddTaskComponent implements OnInit {
             this.toastr.success(res.tasks.addTask.massage, 'Success', {
               timeOut: 2000
             });
-          },
-          error: err => {
-            console.log(err, err);
-            // this.error.handleError(err);
           }
         });
       } else {
@@ -131,10 +147,6 @@ export class AddTaskComponent implements OnInit {
             this.toastr.success(res.tasks.addTask.massage, 'Success', {
               timeOut: 2000
             });
-          },
-          error: err => {
-            console.log(err, err);
-            // this.error.handleError(err);
           }
         });
       }
