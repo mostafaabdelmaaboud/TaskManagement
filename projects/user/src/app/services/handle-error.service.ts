@@ -10,7 +10,11 @@ import { Logout } from '../auth/store/actions/auth.actions';
 })
 export class HandleErrorService {
 
-  constructor(private store: Store, private router: Router, private toastr: ToastrService) { }
+  private store = inject(Store);
+  private router = inject(Router);
+  private toastr = inject(ToastrService);
+
+  constructor() { }
 
   public handleError(err: HttpErrorResponse) {
     let errorMessage: string;
