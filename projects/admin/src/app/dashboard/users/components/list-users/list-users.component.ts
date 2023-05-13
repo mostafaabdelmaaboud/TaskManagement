@@ -168,7 +168,6 @@ export class ListUsersComponent implements OnInit, OnDestroy {
 
   }
   mappingTasks(data: UsersModel[]): UsersModel[] {
-    debugger;
 
     let newTasks: UsersModel[] = data?.map(item => {
       return {
