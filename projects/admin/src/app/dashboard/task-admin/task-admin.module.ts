@@ -39,13 +39,9 @@ import { NotFoundImageComponent } from '../../shared/components/not-found-image/
     MatNativeDateModule,
     MatSelectModule,
     MatPaginatorModule,
-<<<<<<< HEAD
 
-    MatProgressSpinnerModule
-=======
     MatProgressSpinnerModule,
     NotFoundImageComponent
->>>>>>> user
 
   ]
 })

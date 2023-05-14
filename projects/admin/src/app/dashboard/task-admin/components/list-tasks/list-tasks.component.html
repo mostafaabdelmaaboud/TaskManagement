@@ -56,14 +56,8 @@
         <th mat-header-cell *matHeaderCellDef> {{"tasks.no" | translate}}. </th>
         <td class="image-td" mat-cell *matCellDef="let element, let index = index">
           <span class="mobile-label">{{"tasks.position" | translate}}:</span>
-<<<<<<< HEAD
-
-
-          <img [alt]="element.title" [src]="linkServer +'/' + element.image" alt="" width="70px" height="70px">
-=======
           <app-not-found-image [image]="element.image" [alt]="element.title" [width]="'70px'"
             [height]="'70px'"></app-not-found-image>
->>>>>>> user
         </td>
       </ng-container>
       <!-- title Column -->
