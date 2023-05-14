@@ -8,6 +8,7 @@ import { environment } from 'projects/admin/src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
+import { TaskUserService } from '../../services/task-user.service';
 
 @Component({
   selector: 'app-list-tasks',
@@ -20,8 +21,10 @@ export class ListTasksComponent implements OnInit {
   protected toastr = inject(ToastrService);
   protected router = inject(Router);
   public translate = inject(TranslateService);
+  public taskUserService = inject(TaskUserService);
 
   baseApi = environment.baseApi;
+
   userData!: UserData;
   tasksData!: tasksModel[];
   protected store = inject(Store);
@@ -43,9 +46,9 @@ export class ListTasksComponent implements OnInit {
         return { ...item, isLoading: false }
       });
     })
+
   }
   initialTasks(loadTask: boolean) {
-    debugger;
 
     let token = JSON.stringify(localStorage.getItem("token"));
     if (token) {

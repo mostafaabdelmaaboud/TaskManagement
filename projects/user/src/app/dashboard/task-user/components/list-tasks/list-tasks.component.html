@@ -10,7 +10,7 @@
               <mat-card-header>
                 <mat-card-title>{{task.title}}</mat-card-title>
               </mat-card-header>
-              <img mat-card-image width="150px" [src]="baseApi + '/' + task.image" alt="Photo of a Shiba Inu">
+              <app-not-found-image [image]="task.image" [alt]="task.title" [width]="100 + '%'"></app-not-found-image>
               <mat-card-content>
                 <p class="card-dealline">{{"tasks.deadlinedate" | translate}}: {{task.deadline}}</p>
                 <p>1.0079</p>

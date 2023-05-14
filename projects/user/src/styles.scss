@@ -86,6 +86,8 @@ html:lang(ar) {
     text-align: left !important;
   }
 
+
+
   .form-login,
   .form-register {
     .form-check {
@@ -187,6 +189,10 @@ html:lang(ar) {
 }
 
 @media(max-width: 992px) {
+  .section-details {
+    margin-top: 30px !important;
+  }
+
   .layOut-language {
     width: initial;
     display: inline-block;
@@ -201,6 +207,11 @@ html:lang(ar) {
 }
 
 @media(max-width: 768px) {
+  .content-taskDetails {
+    >.row {
+      margin: 0 !important;
+    }
+  }
 
   .container,
   .container-sm {

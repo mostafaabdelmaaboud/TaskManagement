@@ -40,7 +40,6 @@
           image is <strong>required</strong>
         </mat-error>
       </div>
-
       <mat-form-field class="w-100" appearance="fill">
         <mat-label>{{"tasks.deadlinedate" | translate}}</mat-label>
         <input formControlName="deadline" matInput [matDatepicker]="picker">
@@ -70,5 +69,4 @@
   <div class="contentSpinner" *ngIf="isLoaded">
     <mat-spinner></mat-spinner>
   </div>
-
 </div>

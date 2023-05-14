@@ -20,7 +20,6 @@ export class ConfirmationComponent implements OnInit {
     }
   }
   confirm() {
-    debugger;
     if (this.data.dataType == "DeleteTask") {
       this.data.dataType = "DeletedTask";
       this.dialogRef.close(this.data.dataType);

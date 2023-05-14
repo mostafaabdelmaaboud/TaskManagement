@@ -1,0 +1,11 @@
+<div class="containerImage position-relative">
+  <div class="container-spinner justify-content-center align-items-center w-100 d-flex" [style.height]="height"
+    *ngIf="isLoading">
+    <mat-spinner diameter="60" [style.width.px]="60" [style.height.px]="60"></mat-spinner>
+  </div>
+
+  <img [src]="baseApi + '/' + img" [style.width]="width" [style.height]="height" [alt]="alt" appHideMissing
+    (showMossageImage)="showMissingImage($event)" (load)="onImageLoad($event)">
+  <img [src]="imageSourceNotFound" [style.width]="width" [style.height]="height" *ngIf="imageSourceNotFound"
+    [alt]="imageSourceNotFound">
+</div>
