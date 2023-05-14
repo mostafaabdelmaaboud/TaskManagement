@@ -56,7 +56,6 @@ export class AddTaskComponent implements OnInit {
   ) {
     this.dialogRef.disableClose = true;
   }
-
   ngOnInit(): void {
     this.creatForm();
     this.addTaskIsLoaded$.subscribe(res => {
@@ -70,11 +69,6 @@ export class AddTaskComponent implements OnInit {
       console.log(res, res);
       this.users = this.mappingTasks(res);
     });
-    this.usersLoaded$.subscribe(usersLoaded => {
-      if (!usersLoaded) {
-        this.store.dispatch(new GetAllUsers(this.filteration))
-      }
-    })
 
   }
   mappingTasks(data: UserID[]): any[] {
@@ -104,18 +98,20 @@ export class AddTaskComponent implements OnInit {
   }
   onNoClick(): void {
     this.closeDialog = false;
-
     Object.keys(this.formValues).forEach((item: string) => {
       if (this.formValues[item] != this.newTaskForm.value[item]) {
         this.closeDialog = true;
       }
-
     });
     if (!this.closeDialog) {
       this.dialogRef.close();
     } else {
       const dialogRef = this.matDialig.open(ConfirmationComponent, {
-        width: "30vw"
+        width: "30vw",
+        data: {
+          text: "Are You Sure That You Want To Discard Your Changes?",
+          dataType: "checkInputs"
+        }
       });
     }
   }

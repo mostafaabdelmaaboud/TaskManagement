@@ -1,11 +1,13 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Select, Store } from '@ngxs/store';
-import { CompleteTask, GetTaskUser } from '../../store/actions/taskUser.actions';
+import { CompleteTask, GetTaskUser, GetUserDetails } from '../../store/actions/taskUser.actions';
 import { UserData, filterTasksModel, tasksModel } from '../../context/DTOs';
 import { TasksUser } from '../../store/state/taskUser.state';
 import { Observable } from 'rxjs';
 import { environment } from 'projects/admin/src/environments/environment';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-list-tasks',
@@ -15,12 +17,14 @@ import { ToastrService } from 'ngx-toastr';
 export class ListTasksComponent implements OnInit {
   @Select(TasksUser.tasksLoaded) tasksLoaded$!: Observable<boolean>
   @Select(TasksUser.tasks) tasks$!: Observable<tasksModel[]>
-  private toastr = inject(ToastrService);
+  protected toastr = inject(ToastrService);
+  protected router = inject(Router);
+  public translate = inject(TranslateService);
 
   baseApi = environment.baseApi;
   userData!: UserData;
   tasksData!: tasksModel[];
-  private store = inject(Store);
+  protected store = inject(Store);
   isLoading = false;
   totalItems: number = 0;
   storageTotalItems: number = 0;
@@ -31,11 +35,7 @@ export class ListTasksComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    let token = JSON.stringify(localStorage.getItem("token"));
-    if (token) {
-      this.userData = JSON.parse(window.atob(token.split(".")[1]));
-      this.getTasks(this.filteration, this.userData.userId, null);
-    }
+    this.initialTasks(true);
     this.tasks$.subscribe(res => {
       this.totalItems = res.length
       this.storageTotalItems = res.length;
@@ -44,18 +44,43 @@ export class ListTasksComponent implements OnInit {
       });
     })
   }
+  initialTasks(loadTask: boolean) {
+    debugger;
+
+    let token = JSON.stringify(localStorage.getItem("token"));
+    if (token) {
+      this.userData = JSON.parse(window.atob(token.split(".")[1]));
+      if (loadTask) {
+        this.getTasks(this.filteration, this.userData.userId, null);
+
+      }
+    }
+  }
   getTasks(filter: filterTasksModel, id: string, page: number | null) {
     if (page == null) {
       this.tasksLoaded$.subscribe(tasksLoaded => {
         if (!tasksLoaded) {
           this.isLoading = true;
-          this.store.dispatch(new GetTaskUser(filter, id)).subscribe(res => {
+          this.store.dispatch(new GetTaskUser(filter, id)).subscribe({
+            next: res => {
+              // this.totalItems = res.UserTasks.tasks.length
+              this.isLoading = false;
+            },
+            error: err => {
+              this.isLoading = false;
 
-            // this.totalItems = res.UserTasks.tasks.length
-            this.isLoading = false;
-          }, err => {
-            this.isLoading = false;
+            }
+          });
+        } else {
+          this.store.dispatch(new GetTaskUser(filter, id)).subscribe({
+            next: res => {
+              // this.totalItems = res.UserTasks.tasks.length
+              this.isLoading = false;
+            },
+            error: err => {
+              this.isLoading = false;
 
+            }
           });
         }
       })
@@ -88,6 +113,20 @@ export class ListTasksComponent implements OnInit {
         timeOut: 2000
       });
     });
+  }
+  getUserDetails(id: string) {
+    let index = this.tasksData.findIndex(item => item._id === id);
+    this.tasksData[index].isLoading = true;
+    this.store.dispatch(new GetUserDetails(id)).subscribe({
+      next: (response) => {
+        // treat recieved data
+        this.router.navigate(["/dashboard/" + id]);
+      },
+      error: (error) => {
+        // treat error
+        this.tasksData[index].isLoading = false;
 
+      }
+    })
   }
 }

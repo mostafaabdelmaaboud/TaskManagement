@@ -12,39 +12,30 @@
               </mat-card-header>
               <img mat-card-image width="150px" [src]="baseApi + '/' + task.image" alt="Photo of a Shiba Inu">
               <mat-card-content>
-                <p class="card-dealline">Dead-Line Date: {{task.deadline}}</p>
+                <p class="card-dealline">{{"tasks.deadlinedate" | translate}}: {{task.deadline}}</p>
                 <p>1.0079</p>
               </mat-card-content>
             </section>
-
             <mat-card-actions>
-              <button mat-raised-button>Details</button>
-              <button mat-raised-button color="primary" (click)="complete(task)">Complete</button>
-
-
+              <button mat-raised-button (click)="getUserDetails(task._id)">{{"tasks.details" | translate}}</button>
+              <button mat-raised-button color="primary" (click)="complete(task)">{{"tasks.complete" |
+                translate}}</button>
             </mat-card-actions>
             <div class="card-spinner d-flex" *ngIf="task.isLoading">
               <mat-spinner diameter="60" [style.width.px]="60" [style.height.px]="60"></mat-spinner>
-
             </div>
           </mat-card>
-
         </div>
         <div class="alert alert-danger" role="alert" *ngIf="!isLoading && tasksData.length == 0">
-          No Tasks Found Assgined
+          {{"tasks.notasksfoundassgined" | translate}}
         </div>
         <div class="paginate" *ngIf="!isLoading && tasksData.length != 0">
           <pagination-controls (pageChange)="changePage($event)"></pagination-controls>
         </div>
         <div class="container-spinner d-flex" *ngIf="isLoading">
           <mat-spinner diameter="60" [style.width.px]="60" [style.height.px]="60"></mat-spinner>
-
         </div>
-
       </div>
     </div>
-
-
   </div>
-
 </div>

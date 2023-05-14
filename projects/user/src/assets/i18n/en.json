@@ -42,7 +42,7 @@
     "required": "required",
     "minimunlengthfivecharacters": "minimun length 5 characters",
     "useris": "User is",
-    "deadlinedate": "deadline Date",
+    "deadlinedate": "Dead-Line Date",
     "deadlinedateis": "deadline Date is",
     "address": "Address",
     "Addressis": "Address is",
@@ -50,7 +50,10 @@
     "create": "Create",
     "nofileuploadedyet": "No file uploaded yet.",
     "discardyourchanges": "Are You Sure That You Want To Discard Your Changes",
-    "yes": "Yes"
+    "yes": "Yes",
+    "details": "Details",
+    "complete": "Complete",
+    "notasksfoundassgined": "No Tasks Found Assgined"
   },
   "MAT_PAGINATOR": {
     "ITEMS_PER_PAGE": "Items per page",

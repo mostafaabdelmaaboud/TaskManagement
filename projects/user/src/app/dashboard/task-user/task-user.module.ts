@@ -9,16 +9,20 @@ import { NgxsModule } from '@ngxs/store';
 import { TasksUser } from './store/state/taskUser.state';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { TaskDetailsComponent } from './components/task-details/task-details.component';
+import { SharedModule } from 'projects/admin/src/app/shared/shared.module';
 
 
 @NgModule({
   declarations: [
-    ListTasksComponent
+    ListTasksComponent,
+    TaskDetailsComponent
   ],
   imports: [
     CommonModule,
     TaskUserRoutingModule,
     MatCardModule,
+    SharedModule,
     NgxsModule.forFeature([TasksUser]),
     MatButtonModule,
     MatProgressSpinnerModule,

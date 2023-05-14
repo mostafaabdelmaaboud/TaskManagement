@@ -50,7 +50,10 @@
     "create": "اضافه",
     "nofileuploadedyet": "لم يتم تحميل أي ملف حتى الآن.",
     "discardyourchanges": "هل أنت متأكد أنك تريد تجاهل التغييرات الخاصة بك",
-    "yes": "Yes"
+    "yes": "نعم",
+    "details": "تفاصيل",
+    "complete": "مكتمل",
+    "notasksfoundassgined": "لم يتم العثور على مهام محددة"
   },
   "MAT_PAGINATOR": {
     "ITEMS_PER_PAGE": "مواد لكل صفحة",

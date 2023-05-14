@@ -10,6 +10,10 @@ export class GetTaskUser {
 export class CompleteTask {
   static readonly type = "[TaskUser] Complete Task";
   constructor(public payload: filterTasksModel, public taskId: string, public userId: string) {
-
   }
+}
+export class GetUserDetails {
+  static readonly type = "[TaskUser] Get User Details";
+  constructor(public id: string) { }
+
 }
