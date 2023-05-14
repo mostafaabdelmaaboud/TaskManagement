@@ -1,4 +1,4 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { GetTasksDetailsModel, filterTasksModel } from '../context/DTOs';
 import { environment } from 'projects/admin/src/environments/environment';
@@ -26,4 +26,5 @@ export class TaskUserService {
   getUserDetails(id: string): Observable<GetTasksDetailsModel> {
     return this.http.get<GetTasksDetailsModel>(`${environment.baseApi}/tasks/task/${id}`);
   }
+
 }

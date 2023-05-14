@@ -1,0 +1,20 @@
+.hidden {
+  display: none;
+}
+
+.intersectContainer {
+  display: block;
+  width: 150px;
+  height: 150px;
+  border: 1px solid gray;
+  border-radius: 15px;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  -ms-border-radius: 15px;
+  -o-border-radius: 15px;
+}
+
+.container-spinner {
+  height: 130px;
+
+}

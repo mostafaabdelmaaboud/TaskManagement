@@ -11,12 +11,15 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { TaskDetailsComponent } from './components/task-details/task-details.component';
 import { SharedModule } from 'projects/admin/src/app/shared/shared.module';
+import { HideMissingDirective } from '../../directives/hide-missing.directive';
+import { NotFoundImageComponent } from '../../shared/components/not-found-image/not-found-image.component';
 
 
 @NgModule({
   declarations: [
     ListTasksComponent,
     TaskDetailsComponent
+
   ],
   imports: [
     CommonModule,
@@ -26,7 +29,8 @@ import { SharedModule } from 'projects/admin/src/app/shared/shared.module';
     NgxsModule.forFeature([TasksUser]),
     MatButtonModule,
     MatProgressSpinnerModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    NotFoundImageComponent
   ]
 })
 export class TaskUserModule { }

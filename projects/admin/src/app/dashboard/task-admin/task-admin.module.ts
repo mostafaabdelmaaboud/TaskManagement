@@ -18,6 +18,7 @@ import { ConfirmationComponent } from './components/confirmation/confirmation.co
 import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { AllUsersState } from '../users/store/state/allUsers.state';
+import { NotFoundImageComponent } from '../../shared/components/not-found-image/not-found-image.component';
 
 
 @NgModule({
@@ -38,8 +39,13 @@ import { AllUsersState } from '../users/store/state/allUsers.state';
     MatNativeDateModule,
     MatSelectModule,
     MatPaginatorModule,
+<<<<<<< HEAD
 
     MatProgressSpinnerModule
+=======
+    MatProgressSpinnerModule,
+    NotFoundImageComponent
+>>>>>>> user
 
   ]
 })

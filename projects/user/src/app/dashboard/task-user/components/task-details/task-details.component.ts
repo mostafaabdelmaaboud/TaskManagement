@@ -46,11 +46,8 @@ export class TaskDetailsComponent extends ListTasksComponent implements OnInit {
   }
 
   override complete() {
-    debugger;
     super.initialTasks(false);
-    debugger;
     if (this.taskId) {
-      debugger;
       this.store.dispatch(new CompleteTask(this.filteration, this.taskId, this.userData.userId)).subscribe(res => {
         this.toastr.success(res?.UserTasks.massage || "Task Complete Successfully", 'Success', {
           timeOut: 2000
@@ -59,4 +56,5 @@ export class TaskDetailsComponent extends ListTasksComponent implements OnInit {
       });
     }
   }
+
 }

@@ -100,14 +100,11 @@ export class ListTasksComponent implements OnInit, OnDestroy {
     this.store.dispatch(new GetAllUsers(this.filteration))
 
     this.totalItems$.subscribe(totalItems => {
-      debugger;
-
       this.length = totalItems;
       console.log(totalItems)
     })
 
     this.tasksLoaded$.subscribe(tasksLoaded => {
-      debugger;
       if (!tasksLoaded) {
         this.store.dispatch(new GetAllTasks(this.filteration)).subscribe({
           next: res => {
@@ -230,7 +227,6 @@ export class ListTasksComponent implements OnInit, OnDestroy {
       }
     });
     dialogRef.afterClosed().subscribe(result => {
-      debugger;
       console.log('The dialog was closed', result);
       // this.data = result;
       if (result === "DeletedTask") {
