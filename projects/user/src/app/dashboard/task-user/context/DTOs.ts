@@ -3,6 +3,9 @@ export interface filterTasksModel {
   limit?: number;
   status?: string;
 }
+export interface GetTasksDetailsModel {
+  tasks: tasksModel
+}
 export interface tasksModel {
   _id: string;
   title: string;

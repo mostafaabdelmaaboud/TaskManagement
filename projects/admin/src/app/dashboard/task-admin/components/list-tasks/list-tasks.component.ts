@@ -5,7 +5,7 @@ import { Observable, Subscription, debounceTime, take } from 'rxjs';
 import { DeleteTask, GetAllTasks } from '../../store/actions/allTasks.actions';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AddTaskComponent } from '../add-task/add-task.component';
-import { Filteration, ListUsersModel, UsersModel } from '../../context/DTOs';
+import { Filteration, ListUsersModel, UserID, UsersModel, listUserID } from '../../context/DTOs';
 import { environment } from 'projects/admin/src/environments/environment';
 import { HandleErrorService } from 'projects/admin/src/app/services/handle-error.service';
 import { ToastrService } from 'ngx-toastr';
@@ -13,6 +13,9 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import * as moment from 'moment';
 import { MatPaginator, MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
 import { TranslateService } from '@ngx-translate/core';
+import { ConfirmationComponent } from '../confirmation/confirmation.component';
+import { AllUsersState } from '../../../users/store/state/allUsers.state';
+import { GetAllUsers } from '../../../users/store/actions/allUsers.actions';
 
 
 
@@ -38,7 +41,8 @@ export class ListTasksComponent implements OnInit, OnDestroy {
   @Select(AllTasksState.massageDeleteTaks) massageDeleteTaks$!: Observable<string | null>;
   @Select(AllTasksState.tasksLoaded) tasksLoaded$!: Observable<boolean>;
   @Select(AllTasksState.totalItems) totalItems$!: Observable<number>;
-
+  @Select(AllUsersState.usersLoaded) usersLoaded$!: Observable<boolean>;
+  @Select(AllUsersState.allUsers) allUsers$!: Observable<any[]>;
   private store = inject(Store);
   public dialog = inject(MatDialog);
   private error = inject(HandleErrorService);
@@ -56,19 +60,18 @@ export class ListTasksComponent implements OnInit, OnDestroy {
     page: 1,
     limit: 10
   };
-  users: any[] = [
 
-    { name: "Mohamed", id: "6452a0749bdca9984acf10f8" },
-    { name: "Ahmed", id: "6452a0e79bdca9984acf10fe" },
-    { name: "Mostafa", id: "6452a1049bdca9984acf1101" },
-    { name: "shosho", id: "6452b8d3bd7e7eb41913875f" }
-  ]
+  users: listUserID[] = []
+
+
   status: any[] = [
     { name: "Complete", id: "Complete" },
     { name: "In-Progress", id: "In-Progress" },
   ]
   constructor(
-    public _MatPaginatorIntl: MatPaginatorIntl
+    public _MatPaginatorIntl: MatPaginatorIntl,
+    public matDialig: MatDialog,
+
   ) { }
 
   ngOnInit(): void {
@@ -82,15 +85,29 @@ export class ListTasksComponent implements OnInit, OnDestroy {
 
       console.log(res, res);
       this.dataSource = this.mappingTasks(res);
-    });
 
+    });
+    this.allUsers$.subscribe((res: UserID[]) => {
+      console.log(res, res);
+      this.users = res?.map(item => {
+        return {
+          name: item.username,
+          id: item._id
+
+        }
+      });
+    });
+    this.store.dispatch(new GetAllUsers(this.filteration))
 
     this.totalItems$.subscribe(totalItems => {
+      debugger;
+
       this.length = totalItems;
       console.log(totalItems)
     })
 
     this.tasksLoaded$.subscribe(tasksLoaded => {
+      debugger;
       if (!tasksLoaded) {
         this.store.dispatch(new GetAllTasks(this.filteration)).subscribe({
           next: res => {
@@ -204,23 +221,35 @@ export class ListTasksComponent implements OnInit, OnDestroy {
   }
   deleteRow(id: string) {
     let objIndex = this.dataSource.findIndex((obj => obj._id === id));
-    let conf = confirm("Want to delete?");
-    if (conf) {
-      this.dataSource[objIndex].loading = true;
-      this.store.dispatch(new DeleteTask(id)).subscribe({
-        next: data => {
-          this.dataSource[objIndex].loading = false;
-          this.toastr.success("Task Is Deleted", 'Success', {
-            timeOut: 2000
-          });
-        },
-        error: err => {
-          this.dataSource[objIndex].loading = false;
-        },
-      })
+    // let conf = confirm("Want to delete?");
+    const dialogRef = this.matDialig.open(ConfirmationComponent, {
+      width: "30vw",
+      data: {
+        text: "Want to delete?",
+        dataType: "DeleteTask"
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      debugger;
+      console.log('The dialog was closed', result);
+      // this.data = result;
+      if (result === "DeletedTask") {
+        this.dataSource[objIndex].loading = true;
+        this.store.dispatch(new DeleteTask(id)).subscribe({
+          next: data => {
+            this.dataSource[objIndex].loading = false;
+            this.toastr.success("Task Is Deleted", 'Success', {
+              timeOut: 2000
+            });
+          },
+          error: err => {
+            this.dataSource[objIndex].loading = false;
+          },
+        })
+        //Logic to delete the item
+      }
+    });
 
-      //Logic to delete the item
-    }
 
   }
   mappingTasks(data: UsersModel[]): UsersModel[] {

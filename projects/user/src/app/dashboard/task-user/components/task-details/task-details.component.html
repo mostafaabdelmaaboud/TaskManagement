@@ -1,0 +1,25 @@
+<div class="container" *ngIf="!isLoading">
+  <div class="content-taskDetails">
+    <div class="row">
+      <div class="col col-lg-6 d-flex justify-content-center align-items-center col-md-12 section-image">
+        <img [src]="baseApi + '/' + taskDetails.image" width="80%" [alt]="taskDetails.title">
+      </div>
+      <div class="col col-lg-6 col-md-12 section-details">
+        <div class="row align-items-center">
+          <div class="col col-7 title">{{taskDetails.title}}</div>
+          <div class="col col-5 action-button text-right">
+            <button mat-raised-button color="primary" (click)="complete()">{{"tasks.complete" |
+              translate}}</button>
+          </div>
+
+        </div>
+        <p class="card-dealline">{{"tasks.deadlinedate" | translate}}: {{taskDetails.deadline}}</p>
+        <p>{{taskDetails.description}}</p>
+
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container-spinner d-flex justify-content-center align-items-center w-100" *ngIf="isLoading">
+  <mat-spinner diameter="60" [style.width.px]="60" [style.height.px]="60"></mat-spinner>
+</div>

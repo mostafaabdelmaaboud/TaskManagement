@@ -2,18 +2,22 @@ import { Injectable, inject } from '@angular/core';
 import { Action, Selector, State, StateContext } from "@ngxs/store";
 import { tasksModel } from "../../context/DTOs";
 import { TaskUserService } from '../../services/task-user.service';
-import { CompleteTask, GetTaskUser } from "../actions/taskUser.actions";
+import { CompleteTask, GetTaskUser, GetUserDetails } from "../actions/taskUser.actions";
 import { catchError, tap, throwError } from 'rxjs';
 export interface AllTasksModel {
-  tasks: tasksModel[],
-  tasksLoaded: boolean
+  tasks: tasksModel[];
+  tasksLoaded: boolean;
 }
 export interface TaskCompleteModel {
   completeTask: {
-    massage: string | null,
-    completeTaskIsLoaded: boolean,
-    isError: string | null
+    massage: string | null;
+    completeTaskIsLoaded: boolean;
+    isError: string | null;
   }
+}
+export interface TaksDetailsModel {
+  taskDetails: tasksModel | null;
+  taskDetailsLoaded: boolean;
 }
 @State<AllTasksModel>({
   name: "UserTasks",
@@ -32,6 +36,13 @@ export interface TaskCompleteModel {
     }
   }
 })
+@State<TaksDetailsModel>({
+  name: "TaskDetails",
+  defaults: {
+    taskDetails: null,
+    taskDetailsLoaded: false
+  }
+})
 @Injectable()
 
 export class TasksUser {
@@ -43,6 +54,14 @@ export class TasksUser {
   @Selector()
   static tasks(state: AllTasksModel) {
     return state.tasks;
+  }
+  @Selector()
+  static taskDetailsLoaded(state: TaksDetailsModel) {
+    return state.taskDetailsLoaded;
+  }
+  @Selector()
+  static taskDetails(state: TaksDetailsModel) {
+    return state.taskDetails;
   }
   constructor() { }
   @Action(GetTaskUser)
@@ -85,5 +104,22 @@ export class TasksUser {
         return throwError(() => err)
       }))
   }
-
+  @Action(GetUserDetails)
+  getUserDetails({ patchState }: StateContext<TaksDetailsModel>, { id }: GetUserDetails) {
+    return this.taskUserService.getUserDetails(id).pipe(
+      tap((res) => {
+        patchState({
+          taskDetails: res.tasks,
+          taskDetailsLoaded: true
+        })
+      }),
+      catchError(err => {
+        patchState({
+          taskDetails: null,
+          taskDetailsLoaded: true
+        })
+        return throwError(() => err);
+      })
+    )
+  }
 }
